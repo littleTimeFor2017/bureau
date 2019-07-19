@@ -1,0 +1,7 @@
+.p_rate{height:14px;position:relative;width:80px;overflow:hidden;display:inline-block;background:url(rate.png) repeat-x;margin:auto;}
+.p_rate i{position:absolute;top:0;left:0;cursor:pointer;height:14px;width:16px;background:url(rate.png) repeat-x 0 -500px}
+.p_rate .select{background-position:0 -32px}
+.p_rate .hover{background-position:0 -16px}
+.grade img{margin:1px;width:14px;height:14px;border:0;}
+.comm_content {border-bottom: 1px dashed #6299c5;margin:0 0 5px 0;padding:0 0 5px 0;word-break:break-all; word-wrap:break-word;}
+.comm_pn {color:#6299c5;}

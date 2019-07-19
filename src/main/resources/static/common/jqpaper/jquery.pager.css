@@ -1,0 +1,186 @@
+.pager{overflow:hidden;zoom:1;}
+.pager ul.pages {
+	display: block;
+	border: none;
+	text-transform: uppercase;
+	font-size: 12px;
+	margin: 10px 0 0px;
+	padding: 0;
+	overflow:hidden;
+}
+
+.pager ul.pages li {
+	list-style: none;
+	float: left;
+	border: 0px solid #ccc;
+	text-decoration: none;
+	margin: 0 5px 0 0;
+	padding: 5px;
+	padding-bottom: 4px;
+}
+
+.pager ul.pages li:hover {
+	border: 0px solid #003f7e;
+}
+
+.pager ul.pages li.pgEmpty {
+	border: 0px solid #ddd;
+	color: #ddd;
+}
+
+.pager ul.pages li.pgCurrent {
+	border: 0px solid #003f7e;
+	color: #000;
+	font-weight: 700;
+	background-color: #ddd;
+}
+
+.pager ul.pages li.pagerinfo {
+	border: 0;
+	color: #000;
+	cursor: default;
+}
+
+.pagerinfo{
+	border: 0px solid red;
+	color: #000;
+	cursor: default;
+	padding:0 0 0 5px;
+	
+}
+
+.pager ul.pages li.pagerjp {
+	padding: 3px;
+	padding-bottom: 4px;
+	border: 0px solid #ddd;
+	color: #000;
+	cursor: default;
+}
+
+.pager ul.pages li input {
+	padding: 0;
+	vertical-align: bottom;
+	border: 1px solid #ddd;
+	width: 40px;
+	height: 17px;
+	_height: 16px;
+}
+
+
+.pager2 ul.pages {
+display:block;
+border:none;
+text-transform:uppercase;
+font-size:12px;
+margin:10px 0 50px;
+padding:0;
+}
+
+.pager2 ul.pages li {
+list-style:none;
+float:left;
+border:1px solid #ccc;
+text-decoration:none;
+margin:0 5px 0 0;
+padding:5px;
+}
+
+.pager2 ul.pages li:hover {
+border:1px solid #003f7e;
+}
+
+.pager2 ul.pages li.pgEmpty {
+border:1px solid #eee;
+color:#eee;
+}
+
+#pager2 ul.pages li.pgCurrent {
+border:1px solid #003f7e;
+color:#000;
+font-weight:700;
+background-color:#eee;
+}
+
+
+
+
+
+
+
+
+
+
+.pager3 ul.pages {
+display:block;
+border:none;
+text-transform:uppercase;
+font-size:12px;
+margin:10px 0 50px;
+padding:0;
+}
+
+.pager3 ul.pages li {
+list-style:none;
+float:left;
+border:1px solid #ccc;
+text-decoration:none;
+margin:0 5px 0 0;
+padding:5px;
+}
+
+.pager3 ul.pages li:hover {
+border:1px solid #003f7e;
+}
+
+.pager3 ul.pages li.pgEmpty {
+border:1px solid #eee;
+color:#eee;
+}
+
+.pager3 ul.pages li.pgCurrent {
+border:1px solid #003f7e;
+color:#000;
+font-weight:700;
+background-color:#eee;
+}
+
+
+
+
+
+
+
+
+.pager4 ul.pages {
+display:block;
+border:none;
+text-transform:uppercase;
+font-size:12px;
+margin:10px 0 50px;
+padding:0;
+}
+
+.pager4 ul.pages li {
+list-style:none;
+float:left;
+border:1px solid #ccc;
+text-decoration:none;
+margin:0 5px 0 0;
+padding:5px;
+}
+
+.pager4 ul.pages li:hover {
+border:1px solid #003f7e;
+}
+
+.pager4 ul.pages li.pgEmpty {
+border:1px solid #eee;
+color:#eee;
+}
+
+.pager4 ul.pages li.pgCurrent {
+border:1px solid #003f7e;
+color:#000;
+font-weight:700;
+background-color:#eee;
+}

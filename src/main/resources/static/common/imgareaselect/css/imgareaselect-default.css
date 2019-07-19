@@ -1,0 +1,52 @@
+/*
+ * imgAreaSelect default style
+ */
+
+.imgareaselect-border1 {
+	background: url(border-v.gif) repeat-y left top;
+}
+
+.imgareaselect-border2 {
+    background: url(border-h.gif) repeat-x left top;
+}
+
+.imgareaselect-border3 {
+    background: url(border-v.gif) repeat-y right top;
+}
+
+.imgareaselect-border4 {
+    background: url(border-h.gif) repeat-x left bottom;
+}
+
+.imgareaselect-border1, .imgareaselect-border2,
+.imgareaselect-border3, .imgareaselect-border4 {
+    filter: alpha(opacity=50);
+	opacity: 0.5;
+}
+
+.imgareaselect-handle {
+    background-color: #fff;
+    border: solid 1px #000;
+    filter: alpha(opacity=50);
+    opacity: 0.5;
+}
+
+.imgareaselect-outer {
+    background-color: #000;
+    filter: alpha(opacity=50);
+    opacity: 0.5;
+}
+
+.imgareaselect-selection {  
+}
+
+.imgareaselect_main {float: left; width: 97%;margin:0;padding:10px;}
+.imgareaselect_file {height:30px;margin:5px;}
+.imgareaselect_file input.inpu {background: none repeat scroll 0 0 #FBFBFB;border: 1px solid #AAA;box-shadow: 1px 1px 2px rgba(200, 200, 200, 0.2) inset;color: #555555;font-size: 13px; margin-top: 2px;outline: 0 none;padding: 3px; width: 300px; overflow:hidden; cursor: pointer;}
+.imgareaselect_preview_main #preview_main, .imgareaselect_preview_main #preview_main_h5 {display:block;z-index:100;width:100%;border:0px solid #AAA;}
+.imgareaselect_preview_main #preview, .imgareaselect_preview_main #preview_h5 {margin: 10px;padding:1px;float: left;position: relative;overflow:hidden;width:178px;height:100px;border:1px solid #AAA;}
+.imgareaselect_preview_main #preview img, .imgareaselect_preview_main #preview_h5 img {position: relative;width:auto;height:100px;}
+.imgareaselect_preview_main #preview_new, .imgareaselect_preview_main #preview_new_h5 {float: left;padding:1px;border:1px solid #AAA;}
+.imgareaselect_source_img {width:auto;height:270px;float:left;}
+.imgareaselect_save_btn {margin:0 0 0 15px;}
+.imgareaselect_say {margin:0 0 0 15px;font-size:13px;line-height: 25px;width: 100%;}

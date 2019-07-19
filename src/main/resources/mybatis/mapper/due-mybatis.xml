@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lixc.bureau.dao.IDueDao">
+    <insert id="addDue">
+                insert into sys_due (`key`,`value`,create_tim) VALUES (  #{key},#{value},now()  )
+    </insert>
+    <update id="editDue">
+                update sys_due set `value`=#{value} where id = #{id}
+    </update>
+    <insert id="addDueList">
+        <if test="list != null and list.size() > 0">
+            <foreach collection="list" item="obj" open="BEGIN;" separator=";" close=";COMMIT;">
+                insert into sys_due (`key`,`value`,create_tim) VALUES (
+                (#{obj.key,jdbcType=VARCHAR},#{obj.value,jdbcType=VARCHAR},now())
+                )
+            </foreach>
+        </if>
+    </insert>
+    <update id="editDueList">
+        <if test="list!=null  and list.size() > 0">
+            <foreach collection="list" item="obj" open="BEGIN;" separator=";" close=";COMMIT ;">
+                update sys_due set `value`=#{obj.value} where id = #{obj.id}
+            </foreach>
+        </if>
+    </update>
+    <select id="getTodayDueList" resultType="com.lixc.bureau.entity.DueEntity">
+        select * from sys_due where create_time between #{start} and #{end} order by id
+    </select>
+
+    <select id="getHisDueList" resultType="com.lixc.bureau.entity.DueEntity">
+        select * from sys_due where create_time &lt;=  #{start} order by id
+    </select>
+    <select id="getDueList" resultType="com.lixc.bureau.entity.DueEntity">
+        select * from sys_due  order by id
+    </select>
+</mapper>

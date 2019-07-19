@@ -1,0 +1,47 @@
+server:
+  port: 8090
+  tomcat:
+    max-threads: 100
+spring:
+  datasource:
+    druid:
+      url: jdbc:mysql://localhost:3306/kindee?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useOldAliasMetadataBehavior=true&useSSL=false
+      username: root
+      password: dfze8ENvyGiJ
+  redis:
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        max-wait: -1ms
+    timeout: 2000ms
+    #redis 数据索引库（默认为0）
+    database: 3
+    #redis 连接密码
+    password: wZcy1Hwv@8qE
+    sentinel:
+      master: master001
+      nodes: 172.17.15.23:16379,172.17.15.23:26379
+# sql 控制台打印
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+learn:
+  secret:
+    # 开启debug 模式后 关闭 http 通讯加密
+    debug: true
+  log:
+    # 操作日志记录文件
+    path: /kdata/app/logs/learnLog/
+    logback:
+      path: /kdata/app/logs/learn_mobile
+    # 是否开启 默认开启
+    enable: true
+#  sign:
+#    # 是否开始签名验证(默认开启)
+#    enable: false
+#  image:
+#    domain: https://elearnplus.com

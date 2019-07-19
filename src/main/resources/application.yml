@@ -1,0 +1,54 @@
+# Tomcat
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    max-threads: 1000
+    min-spare-threads: 30
+  servlet:
+    context-path: /bureau
+    connection-timeout: 5000
+spring:
+  profiles:
+    active: dev
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      driver-class-name: com.mysql.jdbc.Driver
+      initial-size: 10
+      min-idle: 10
+      max-active: 100
+      max-wait: 60000
+      time-between-connect-error-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm
+
+
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  type-aliases-package: com.lixc.bureau.entity,
+  configuration:
+    cache-enabled: true
+    lazy-loading-enabled: true
+    aggressive-lazy-loading: false
+    multiple-result-sets-enabled: true
+    use-column-label: true
+    auto-mapping-behavior: full
+    default-executor-type: simple
+    default-statement-timeout: 600
+
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
