@@ -23,10 +23,6 @@
     <script type="text/javascript" src="<%=path %>/common/bootstrap/validator/js/language/zh_CN.js"></script>
     <script type="text/javascript" src="<%=path %>/common/bootstrap/paginator/bootstrap-paginator.min.js"></script>
     <script type="text/javascript" src="<%=path %>/common/bootstrap/paginator/b3paginator.js"></script>
-    <%--<script type="text/javascript"--%>
-            <%--src="<%=path %>/common/bootstrap/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>--%>
-    <%--<script type="text/javascript"--%>
-            <%--src="<%=path %>/common/bootstrap/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>--%>
     <script type="text/javascript" src="<%=path %>/common/bootstrap/3.3.4/js/bootstrapSwitch.js"></script>
     <script type="text/javascript" src="<%=path %>/common/js/placeholder.js"></script>
     <script src="<%=path %>/common/js/form_gb.js"></script>
@@ -38,7 +34,6 @@
     <script type="text/javascript" src="<%=path %>/common/ueditor/lang/zh-cn/zh-cn.js"></script>
     <script type="text/javascript"
             src="<%=path %>/common/bootstrap/colorpicker/js/bootstrap-colorpicker.min.js"></script>
-
 </head>
 <body class="index">
 <div class="col-md-12">
@@ -86,7 +81,7 @@
         <ul id="pagination" class="pagination"></ul>
         <span class="page-list"></span>
     </div>
-    <input type="hidden" id="pageSize" value="5"/>
+    <input type="hidden" id="pageSize" value="15"/>
     <input type="hidden" id="curPage" value="1"/>
     <input type="hidden" id="totCount" value="100000"/>
     <div id="dModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -134,8 +129,8 @@
                         if (list && list.length > 0) {
                             $(list).each(function (i, e) {
                                 var title = e.title;
-                                if(e.title.length >25){
-                                    title=e.title.substring(0,25)+"...";
+                                if (e.title.length > 25) {
+                                    title = e.title.substring(0, 25) + "...";
                                 }
                                 var html = content_html;
                                 var cno = $('#pageSize').val() * ($('#curPage').val() - 1);
@@ -145,23 +140,13 @@
                                     .replace('{{createTime}}', e.createTime)
                                     .replace('{{is_deleted}}', '<a href="javascript:openDialog(\'edit\',' + e.id + ');" class="btn btn-info btn-sm pull-left">修改</a> <a href="javascript:openDialog(\'del\',' + e.id + ');" class="btn btn-info btn-sm pull-right">删除</a>')
                                 content += html;
-
-
-                                // content += ' <td style="vertical-align: middle;">';
-                                // // content += '  <input name="gzdtIds"  value=' + e.id + ' type="checkbox">';
-                                // content + '</td>';
-                                // content += '<td>' + e.id + '</td>';
-                                // content += '<td>' + e.title + '</td>';
-                                // content += '<td>' + e.createBy + '</td>';
-                                // content += '<td>' + e.createTime + '</td>';
-                                // content += '<td><a href="javascript:openDialog(\'edit\',' + e.id + ');" class="btn btn-info btn-sm pull-left">修改</a> <a href="javascript:openDialog(\'del\',' + e.id + ');" class="btn btn-info btn-sm pull-right">删除</a></td>';
-                                // content += '</tr>';
                             })
                         } else {
                             content = '<tr class="warning text-center"><td colspan="9"> 没有找到匹配的记录</td></tr>'
                         }
                         $('#table_head').html(content);
                         $('#table_head').show();
+                        initB3paginator(data.obj)
                     }
                 },
                 error: function (data) {
@@ -187,7 +172,7 @@
                 $.ajax({
                     url: remote_url,
                     dataType: 'json',
-                    type:'POST',
+                    type: 'POST',
                     beforeSend: function () {
                         loading = layer.load();
                     },
@@ -207,7 +192,7 @@
         }
     }
 
-    function initB3paginator_login(data) {
+    function initB3paginator(data) {
         $("#pageSize").val(data['pageSize']);
         $("#curPage").val(data['curPage']);
         //基本分页

@@ -48,13 +48,13 @@
                         </div>
                         <ul class="oUlplay">
                             <li><a href="" target="_blank">
-                                <img src="<%=path%>/img/img_change/ic5.jpg" style="width: 500px; height: 328px;">
+                                <img src="<%=path%>/img/img_change/ic10.jpg" style="width: 500px; height: 328px;">
                                 <%--<p>&lt;%&ndash;此处文字后续补上&ndash;%&gt;</p>--%></a></li>
                             <li><a href="" target="_blank">
-                                <img src="<%=path%>/img/img_change/ic2.jpg" style="width: 500px; height: 328px">
+                                <img src="<%=path%>/img/img_change/ic9.jpg" style="width: 500px; height: 328px">
                                 <%--<p></p>--%></a></li>
                             <li><a href="" target="_blank">
-                                <img src="<%=path%>/img/img_change/ic6.jpg" style="width: 500px;height: 328px">
+                                <img src="<%=path%>/img/img_change/ic8.jpg" style="width: 500px;height: 328px">
                                 <%--<p></p>--%></a></li>
                         </ul>
                     </div>
@@ -315,7 +315,7 @@
                         <div id="bottom_slider">
                             <ul class="oUlplay">
                                 <li><a target="_blank" href=""><img style="float: left; padding-right: 4.5px;"
-                                                                    src="<%=path%>/img/img_change/b1.jpg" alt=""
+                                                                    src="<%=path%>/img/img_change/ic10.jpg" alt=""
                                                                     width="190"
                                                                     height="137"/>
                                     <p>帮扶共建活动</p></a></li>

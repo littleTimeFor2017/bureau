@@ -19,10 +19,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ManagerServiceImpl implements IManagerService {
+public class ManagerServiceImpl extends PaginatorBean implements IManagerService {
 
     private static final Logger log = LoggerFactory.getLogger(ManagerServiceImpl.class);
 
@@ -52,7 +53,13 @@ public class ManagerServiceImpl implements IManagerService {
 
     @Override
     public List<Article> getArticleListByCID(Article article) {
-        return dao.getArticleListByCID(article);
+        List<Article> list = new ArrayList<>();
+        int count = dao.getArticleListCountByCID(article);
+        this.initPaginator(article, count);
+        if (count > 0) {
+            list = dao.getArticleListByCID(article);
+        }
+        return list;
     }
 
     @Override
@@ -130,10 +137,33 @@ public class ManagerServiceImpl implements IManagerService {
 
     @Override
     public int addAnnex(Annex annex) {
-        System.out.println(dao.addAnnex(annex));
-       return  dao.addAnnex(annex);
+        return dao.addAnnex(annex);
+    }
+
+    @Override
+    public List<ImageEntity> getImageList(ImageEntity imageEntity) {
+        List<ImageEntity> list = new ArrayList<>();
+        int count = dao.selectImageCount(imageEntity);
+        this.initPaginator(imageEntity, count);
+        if (count > 0) {
+            list = dao.selectImageList(imageEntity);
+        }
+        return list;
+    }
+
+    @Override
+    public ImageEntity editImageForward(int id) {
+        return dao.selectImageByID(id);
+    }
+
+    @Override
+    public int delImage(int id) {
+        return dao.deleteImage(id);
     }
 
 
+    public int addImage(ImageEntity imageEntity){
+        return dao.addImage(imageEntity);
+    }
 
 }

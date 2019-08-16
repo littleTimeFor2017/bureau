@@ -8,6 +8,8 @@ import org.springframework.web.servlet.config.annotation.*;
 public class MyWebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+            registry.addResourceHandler("/**").addResourceLocations("/");
+        }
 //        registry.addResourceHandler("/uefile/**").addResourceLocations("file:D:/uefile/");
 //        registry.addResourceHandler("/**").addResourceLocations("classpath:/resources/")
 //        .addResourceLocations("classpath:/static/")
@@ -16,5 +18,4 @@ public class MyWebConfig implements WebMvcConfigurer {
 //                .addResourceLocations("classpath:/static/")
 //                .addResourceLocations("classpath:/public/");
 //        super.addResourceHandlers(registry);
-    }
 }

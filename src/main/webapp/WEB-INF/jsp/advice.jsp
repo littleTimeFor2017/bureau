@@ -17,6 +17,15 @@
 <style type="text/css">
 </style>
 <head>
+    <link rel="shortcut icon" href="<%=path %>/common/ico/favicon.ico">
+    <link href="<%=path%>/common/bootstrap/validator/css/bootstrapValidator.css" rel="stylesheet">
+    <link rel="stylesheet" href="<%=path%>/common/jquery/dateRangePicker/daterangepicker.css">
+    <link href="<%=path%>/common/bootstrap/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="<%=path%>/common/bootstrap/3.3.4/css/bootstrap.css" rel="stylesheet">
+    <link href="<%=path%>/common/css/global.css" rel="stylesheet">
+    <link href="<%=path%>/common/css/public.css" rel="stylesheet">
+    <link href="<%=path %>/common/css/details_top.css" rel="stylesheet">
+    <link rel="stylesheet" href="<%=path %>/common/zTree3.5/css/custom/zTreeStyle.css" type="text/css">
     <meta charset="utf-8">
     <title>${entity.name}</title>
 </head>
@@ -39,10 +48,14 @@
                 <div class="list_con_title">
                     <span>${entity.name}</span>
                 </div>
-                <div class="list_con_content">
+                <div class="list_con_content" id="content-div">
                     <ul id="content"></ul>
                 </div>
             </div>
+        </div>
+        <div class="pagination-main" style="margin-left: 300px;">
+            <ul id="pagination" class="pagination"></ul>
+            <span class="page-list"></span>
         </div>
         <input type="hidden" id="type" value="${entity.id}"/>
         <input type="hidden" id="pageSize" value="15"/>
@@ -58,14 +71,6 @@
     </div>
 </div>
 </body>
-<link rel="shortcut icon" href="<%=path %>/common/ico/favicon.ico">
-<link href="<%=path%>/common/bootstrap/validator/css/bootstrapValidator.css" rel="stylesheet">
-<link href="<%=path%>/common/bootstrap/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
-<link href="<%=path%>/common/bootstrap/3.3.4/css/bootstrap.css" rel="stylesheet">
-<link href="<%=path%>/common/css/global.css" rel="stylesheet">
-<link href="<%=path%>/common/css/public.css" rel="stylesheet">
-<link href="<%=path %>/common/css/details_top.css" rel="stylesheet">
-<link rel="stylesheet" href="<%=path %>/common/zTree3.5/css/custom/zTreeStyle.css" type="text/css">
 <%--<script src="<%=path %>/common/jquery/jquery-1.11.2.min.js"></script>--%>
 <script type="text/javascript" src="<%=path %>/common/bootstrap/muselect/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="<%=path %>/common/bootstrap/validator/js/bootstrapValidator.min.js"></script>
@@ -83,15 +88,16 @@
         loadData();
         changecolor();
     })
-function changecolor(){
-    $(document).ready(function () {
-        jQuery("#li" + id).css("color", "red");
-    });
-}
+
+    function changecolor() {
+        $(document).ready(function () {
+            jQuery("#li" + id).css("color", "red");
+        });
+    }
 
 
-    function goIndex(){
-        window.location.href="/bureau/index";
+    function goIndex() {
+        window.location.href = "/bureau/index";
     }
 
 
@@ -120,20 +126,26 @@ function changecolor(){
                         $(list).each(function (i, e) {
                             content += "<li><img src=\"img/list_con_ico.png\">";
                             content += "<a href=\"<%=path%>/articleDetail?id=" + e.id + "\">"
-                            content += " <div>"+e.title+"</div>";
+                            content += " <div>" + e.title + "</div>";
                             content += "</a>"
                             content += "<span>" + e.createTime + "</span>"
                             content += "</li> "
                         });
+                        $('#content').html(content);
+                        initB3paginator(data.obj)
+                    } else {
+                        content += "<ul class='media-list thread-list' style='margin:20px;'>"
+                            + "<li class='title' style='text-align: center;'>暂无匹配的数据！</li>"
+                            + "</ul>";
+                        $("#content-div").html(content)
                     }
-                    $('#content').html(content);
-                    initB3paginator(data.obj)
                 }
             }
         });
     }
 
     function initB3paginator(data) {
+        console.log(data)
         $("#pageSize").val(data['pageSize']);
         $("#curPage").val(data['curPage']);
         $("#totCount").val(data['totCount']);

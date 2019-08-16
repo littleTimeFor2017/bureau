@@ -2,10 +2,7 @@ package com.lixc.bureau.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.lixc.bureau.constants.BureauConstants;
-import com.lixc.bureau.entity.Annex;
-import com.lixc.bureau.entity.Article;
-import com.lixc.bureau.entity.CategoryEntity;
-import com.lixc.bureau.entity.User;
+import com.lixc.bureau.entity.*;
 import com.lixc.bureau.service.IIndexService;
 import com.lixc.bureau.service.IManagerService;
 import com.lixc.bureau.util.EduResult;
@@ -28,10 +25,7 @@ import java.io.*;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 @RequestMapping("/manager")
@@ -41,6 +35,13 @@ public class ManagerController extends BaseController {
 
     @Value("")
     private String downloadPath;
+
+    //文件保存路径
+    @Value("bureau.path.savePath")
+    private String savePath;
+    //临时文件存储目录
+    @Value("bureau.path.tempPath")
+    private String tempPath;
 
     @Autowired
     private IManagerService managerService;
@@ -93,6 +94,7 @@ public class ManagerController extends BaseController {
             List<Article> list = managerService.getArticleListByCID(article);
             map.put("success", true);
             map.put("list", list);
+            map.put("obj",article);
         } catch (Exception e) {
             e.printStackTrace();
             map.put("success", false);
@@ -135,6 +137,7 @@ public class ManagerController extends BaseController {
     public String uploadFile(HttpServletRequest request , MultipartFile file) {
         this.map = new HashMap<>();
         String savePath = request.getServletContext().getRealPath("/WEB-INF/upload");
+        logger.info("存储路径:"+savePath);
         //上传时生成的临时文件保存目录
         String tempPath = request.getServletContext().getRealPath("/WEB-INF/temp");
         File toFile = new File(tempPath);
@@ -234,30 +237,6 @@ public class ManagerController extends BaseController {
 
         }
         return JSON.toJSONString(map);
-        /*this.map = new HashMap<>();
-        String fileName = file.getOriginalFilename();
-        String filePath = "D:/annex/";
-        File dir = new File(filePath );
-        if(!dir.exists()){
-            dir.mkdirs();
-        }
-        File dest = new File(filePath + fileName);
-        String url=filePath + fileName;
-        Annex annex = new Annex();
-        annex.setFileName(fileName);
-        annex.setUrl(url);
-        int i = managerService.addAnnex(annex);
-        try {
-            file.transferTo(dest);
-            map.put("result",annex.getId());
-            map.put("success",true);
-        } catch (IOException e) {
-            map.put("msg","异常！");
-            map.put("success",false);
-            e.printStackTrace();
-        }
-
-        return JSON.toJSONString(map);*/
     }
 
     //生成上传文件的文件名，文件名以：uuid+"_"+文件的原始名称
@@ -278,71 +257,6 @@ public class ManagerController extends BaseController {
         }
         return dir;
     }
-
-//    @RequestMapping("/downLoadFile")
-//    @ResponseBody
-//    public String downLoadFile(HttpServletRequest request, HttpServletResponse response){
-//        //下载文件的路径
-//        String fromPath = request.getServletContext().getRealPath("/WEB-INF/upload");
-//        int id = Integer.parseInt(request.getParameter("annex_id"));
-//        Annex annex = indexService.getAnnexById(id);
-//        int id1 = annex.getId();
-//        //下载文件的名称
-//        String filename = annex.getFileName();
-//
-//        DataInputStream in = null;
-//        OutputStream out = null;
-//        try{
-//            response.reset();// 清空输出流
-//
-//            String resultFileName =  filename;
-//            resultFileName = URLEncoder.encode(resultFileName,"UTF-8");
-//            response.setCharacterEncoding("UTF-8");
-//            response.setHeader("Content-disposition", "attachment; filename=" + resultFileName);// 设定输出文件头
-//            response.setContentType("application/msexcel");// 定义输出类型
-//            //输入流：本地文件路径
-//            in = new DataInputStream(
-//                    new FileInputStream(new File(downloadPath + "test.xls")));
-//            //输出流
-//            out = response.getOutputStream();
-//            //输出文件
-//            int bytes = 0;
-//            byte[] bufferOut = new byte[1024];
-//            while ((bytes = in.read(bufferOut)) != -1) {
-//                out.write(bufferOut, 0, bytes);
-//            }
-//        } catch(Exception e){
-//            e.printStackTrace();
-//            response.reset();
-//            try {
-//                OutputStreamWriter writer = new OutputStreamWriter(response.getOutputStream(), "UTF-8");
-//                String data = "<script language='javascript'>alert(\"\\u64cd\\u4f5c\\u5f02\\u5e38\\uff01\");</script>";
-//                writer.write(data);
-//                writer.close();
-//            } catch (IOException e1) {
-//                e1.printStackTrace();
-//            }
-//        }finally {
-//            if(null != in) {
-//                try {
-//                    in.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            if(null != out) {
-//                try {
-//                    out.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//
-//        return null;
-//    }
-
-
 
     @RequestMapping("/download")
     public String download(HttpServletRequest request,HttpServletResponse response,@RequestParam("id") int id){
@@ -454,5 +368,102 @@ public class ManagerController extends BaseController {
         eduResult = managerService.delArticle(article, ut.getId());
         eduResult.put("success", true);
         return eduResult;
+    }
+
+    @RequestMapping("/uploadForward")
+    public String uploadForward(){
+        return  "manager/upload_image";
+    }
+
+    /**
+     * 加载图片列表
+     */
+    @ResponseBody
+    @RequestMapping("/imageListJson")
+    public String imageListJson(@RequestBody ImageEntity imageEntity){
+        List<ImageEntity> list = new ArrayList<>();
+        this.map = new HashMap<>();
+        try {
+            list = managerService.getImageList(imageEntity);
+            map.put("success", true);
+            map.put("list", list);
+            map.put("obj",imageEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("success", false);
+            map.put("message", "获取图片列表异常");
+        }
+        return JSON.toJSONStringWithDateFormat(map, "yyyy-MM-dd");
+    }
+
+    @RequestMapping("/addImageForward")
+    public String addImageForward(){
+        return "manager/image_add";
+    }
+    // 添加图片
+    @RequestMapping(name = "addImage", method = RequestMethod.POST)
+    public String addImage(MultipartFile file){
+        this.map = new HashMap<>();
+        //记录提示信息
+        String message = "";
+        try {
+            long size = file.getSize();
+            String name  =file.getOriginalFilename();
+            //从文件中读取输入流 输入到指定目录中
+            String fileName = System.currentTimeMillis() + file.getOriginalFilename();
+            String url = savePath+ File.separator+fileName;
+            //存储到文件表中，列表展示时，只展示前四个，根据时间倒叙排序
+            File destFile = new File(url);
+            if(!destFile.exists()){
+                logger.error("文件不存在");
+                destFile.mkdirs();
+            }
+            file.transferTo(destFile);
+            ImageEntity entity = new ImageEntity();
+            entity.setName(name);
+            entity.setUrl(url);
+            entity.setChecked("N");
+            managerService.addImage(entity);
+            message="添加成功";
+            map.put("success",true);
+            map.put("message",message);
+            map.put("url",url);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            message="上传失败";
+            map.put("success",false);
+            map.put("message",message);
+        }
+        return JSON.toJSONString(map);
+    }
+
+    @RequestMapping("/editImageForward")
+    public String editImageForward(@RequestParam("id")int id){
+      ImageEntity image =   managerService.editImageForward(id);
+      request.setAttribute("entity",image);
+        return "manager/image_edit";
+    }
+
+
+    @ResponseBody
+    @RequestMapping("/delImage")
+    public String delImage(@RequestParam("id")int id){
+        this.map = new HashMap<>();
+        try {
+           int flag =  managerService.delImage(id);
+           if(flag > 0){
+               map.put("success", true);
+           }else{
+               map.put("success", false);
+               map.put("message", "删除图片失败");
+           }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("success", false);
+            map.put("message", "删除图片异常");
+        }
+        return JSON.toJSONStringWithDateFormat(map, "yyyy-MM-dd");
     }
 }

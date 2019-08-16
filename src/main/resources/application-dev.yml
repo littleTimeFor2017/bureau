@@ -1,5 +1,5 @@
 server:
-  port: 8020
+  port: 80
   tomcat:
     max-threads: 100
 
@@ -30,9 +30,9 @@ spring:
     view:
       prefix: /WEB-INF/jsp/
       suffix: .jsp
-  static-path-pattern: /**
+#  static-path-pattern: /**
   resources:
-    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:D:/test/
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:///D:/test/
 
 
 

@@ -146,9 +146,9 @@
         //10 表示今日值班
         if(currentId == '9'){
             $('#system_date').load(path + '/due/dueForward?r='+Math.random());
-        }/*else  if(currentId == '8'){
-            $('#system_date').load(path + '/user/phoneForward?r='+Math.random());
-        }*/else{
+        }else  if(currentId == '11'){
+            $('#system_date').load(path + '/manager/uploadForward?r='+Math.random());
+        }else{
             $('#system_date').load(path + '/manager/gzdtForward?id=' + currentId);
         }
         // if (currentId == 'menu_setting') {
