@@ -1,5 +1,0 @@
-2019-06-28 12:45:36.350 INFO  com.lixc.bureau.controller.ManagerController Line:60  - insert  into  getAllCategorys
-2019-06-28 12:58:44.292 INFO  org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext Line:993 - Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@8681293: startup date [Fri Jun 28 12:43:11 CST 2019]; root of context hierarchy
-2019-06-28 12:58:44.309 INFO  org.springframework.jmx.export.annotation.AnnotationMBeanExporter Line:451 - Unregistering JMX-exposed beans on shutdown
-2019-06-28 12:58:44.326 INFO  org.springframework.jmx.export.annotation.AnnotationMBeanExporter Line:183 - Unregistering JMX-exposed beans
-2019-06-28 12:58:44.333 INFO  com.alibaba.druid.pool.DruidDataSource Line:1385 - {dataSource-1} closed

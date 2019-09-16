@@ -47,52 +47,26 @@
 <script type="text/javascript">
     var c_id = $("#c_id").val();
     var path = '<%=path%>'
-    // $(document).ready(function () {
-    //     $('#paper-add-form').bootstrapValidator({}).on('success.form.bv', function (e) {
-    //         // var description = ue.getContent();
-    //         // $("#description").val(description);
-    //         e.preventDefault();
-    //         var $form = $(e.target);
-    //         if ($("#Atitle").val() == null || $("#Atitle").val() == '') {
-    //             layer.msg("请输入标题", {icon: 2});
-    //             $("#add-paper-btn").button('reset');
-    //             return;
-    //         }  // Get the BootstrapValidator instance
-    //         if($("#annex").val()){
-    //             // uploadAnnex()
-    //         }else{
-    //             // addArticle()
-    //         }
-    //
-    //     });
-    //
-    //     $("#add-paper-btn").on('click', function (event) {
-    //         //提交时验证表单
-    //         $('#paper-add-form').bootstrapValidator('validate');
-    //     });
-    //
-    // });
+    $(document).ready(function () {
+        $('#paper-add-form').bootstrapValidator({}).on('success.form.bv', function (e) {
+            // var description = ue.getContent();
+            // $("#description").val(description);
+            e.preventDefault();
+            var fd = new FormData($("#paper-add-form")[0]);
+            fd.append('file', $('#logoFile')[0].files[0]);
+            var $form = $(e.target);
+            setImg(fd);
+        });
+
+        $("#add-paper-btn").on('click', function (event) {
+            //提交时验证表单
+            $('#paper-add-form').bootstrapValidator('validate');
+        });
+
+    });
 
     //用于进行图片上传，返回地址
-    function setImg(obj){
-        var f=$(obj).val();
-        alert(f);
-        console.log(obj);
-        if(f == null || f ==undefined || f == ''){
-            return false;
-        }
-        if(!/\.(?:png|jpg|bmp|gif|PNG|JPG|BMP|GIF)$/.test(f))
-        {
-           layer.alert("类型必须是图片(.png|jpg|bmp|gif|PNG|JPG|BMP|GIF)");
-            $(obj).val('');
-            return false;
-        }
-        var data = new FormData();
-        console.log(data);
-        $.each($(obj)[0].files,function(i,file){
-            data.append('file', file);
-        });
-        console.log(data);
+    function setImg(data){
         $.ajax({
             type: "POST",
             url: path+"/manager/addImage",
@@ -109,7 +83,6 @@
                 }else{
                     layer.msg(ret.message,{icon:2});
                     $("#url").val("");
-                    $(obj).val('');
                 }
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {

@@ -36,12 +36,12 @@ public class ManagerController extends BaseController {
     @Value("")
     private String downloadPath;
 
-    //文件保存路径
-    @Value("bureau.path.savePath")
-    private String savePath;
-    //临时文件存储目录
-    @Value("bureau.path.tempPath")
-    private String tempPath;
+//    //文件保存路径
+//    @Value("${bureau.path.savePath}")
+//    private String savePath;
+//    //临时文件存储目录
+//    @Value("${bureau.path.tempPath}")
+//    private String tempPath;
 
     @Autowired
     private IManagerService managerService;
@@ -50,7 +50,7 @@ public class ManagerController extends BaseController {
     private IIndexService indexService;
 
     @RequestMapping("/index")
-    public String index(){
+    public String index() {
         return "manager/index";
     }
 
@@ -94,7 +94,7 @@ public class ManagerController extends BaseController {
             List<Article> list = managerService.getArticleListByCID(article);
             map.put("success", true);
             map.put("list", list);
-            map.put("obj",article);
+            map.put("obj", article);
         } catch (Exception e) {
             e.printStackTrace();
             map.put("success", false);
@@ -115,10 +115,10 @@ public class ManagerController extends BaseController {
 
     @RequestMapping(value = "/addArticle/{ids}", method = RequestMethod.POST)
     @ResponseBody
-    public EduResult addArticle(HttpServletRequest request ,
+    public EduResult addArticle(HttpServletRequest request,
                                 @RequestBody Article article,
                                 @PathVariable("ids") String ids
-                                ) {
+    ) {
         EduResult eduResult = new EduResult();
         User ut = (User) request.getSession().getAttribute(BureauConstants.USER_TOKEN);
         if (ut == null) {
@@ -126,7 +126,7 @@ public class ManagerController extends BaseController {
             eduResult.put("msg", "您无权查看！");
             return eduResult;
         }
-         eduResult = managerService.addArticle(article, ut.getId(), ids);
+        eduResult = managerService.addArticle(article, ut.getId(), ids);
         return eduResult;
 
     }
@@ -134,10 +134,10 @@ public class ManagerController extends BaseController {
 
     @RequestMapping("/uploadFile")
     @ResponseBody
-    public String uploadFile(HttpServletRequest request , MultipartFile file) {
+    public String uploadFile(HttpServletRequest request, MultipartFile file) {
         this.map = new HashMap<>();
         String savePath = request.getServletContext().getRealPath("/WEB-INF/upload");
-        logger.info("存储路径:"+savePath);
+        logger.info("存储路径:" + savePath);
         //上传时生成的临时文件保存目录
         String tempPath = request.getServletContext().getRealPath("/WEB-INF/temp");
         File toFile = new File(tempPath);
@@ -193,36 +193,37 @@ public class ManagerController extends BaseController {
 //                    //如果需要限制上传的文件类型，那么可以通过文件的扩展名来判断上传的文件类型是否合法
 //                    System.out.println("上传文件的扩展名为:"+fileExtName);
             //获取item中的上传文件的输入流
-            InputStream fis = file.getInputStream();
-            //得到文件保存的名称
-            fileName = mkFileName(fileName);
-            //得到文件保存的路径
+            outPutToDestFile(file, savePath, fileName,"1");
+//            InputStream fis = file.getInputStream();
+//            //得到文件保存的名称
+//            fileName = mkFileName(fileName);
+//            //得到文件保存的路径
             String savePathStr = mkFilePath(savePath, fileName);
-            logger.info("保存路径为:" + savePathStr);
-            //创建一个文件输出流
-            FileOutputStream fos = new FileOutputStream(savePathStr + File.separator + fileName);
-            //获取读通道
-            FileChannel readChannel = ((FileInputStream) fis).getChannel();
-            //获取读通道
-            FileChannel writeChannel = fos.getChannel();
-            //创建一个缓冲区
-            ByteBuffer buffer = ByteBuffer.allocate(1024);
-            //判断输入流中的数据是否已经读完的标识
-            int length = 0;
-            //循环将输入流读入到缓冲区当中，(len=in.read(buffer))>0就表示in里面还有数据
-            while (true) {
-                buffer.clear();
-                int len = readChannel.read(buffer);//读入数据
-                if (len < 0) {
-                    break;//读取完毕
-                }
-                buffer.flip();
-                writeChannel.write(buffer);//写入数据
-            }
-            //关闭输入流
-            fis.close();
-            //关闭输出流
-            fos.close();
+//            logger.info("保存路径为:" + savePathStr);
+//            //创建一个文件输出流
+//            FileOutputStream fos = new FileOutputStream(savePathStr + File.separator + fileName);
+//            //获取读通道
+//            FileChannel readChannel = ((FileInputStream) fis).getChannel();
+//            //获取读通道
+//            FileChannel writeChannel = fos.getChannel();
+//            //创建一个缓冲区
+//            ByteBuffer buffer = ByteBuffer.allocate(1024);
+//            //判断输入流中的数据是否已经读完的标识
+//            int length = 0;
+//            //循环将输入流读入到缓冲区当中，(len=in.read(buffer))>0就表示in里面还有数据
+//            while (true) {
+//                buffer.clear();
+//                int len = readChannel.read(buffer);//读入数据
+//                if (len < 0) {
+//                    break;//读取完毕
+//                }
+//                buffer.flip();
+//                writeChannel.write(buffer);//写入数据
+//            }
+//            //关闭输入流
+//            fis.close();
+//            //关闭输出流
+//            fos.close();
             Annex annex = new Annex();
             annex.setFileName(originName);
             annex.setSaveName(fileName);
@@ -240,43 +241,44 @@ public class ManagerController extends BaseController {
     }
 
     //生成上传文件的文件名，文件名以：uuid+"_"+文件的原始名称
-    public String mkFileName(String fileName){
-        return UUID.randomUUID().toString()+"_"+fileName;
+    public String mkFileName(String fileName) {
+        return UUID.randomUUID().toString() + "_" + fileName;
     }
-    public String mkFilePath(String savePath,String fileName){
+
+    public String mkFilePath(String savePath, String fileName) {
         //得到文件名的hashCode的值，得到的就是filename这个字符串对象在内存中的地址
         int hashcode = fileName.hashCode();
-        int dir1 = hashcode&0xf;
-        int dir2 = (hashcode&0xf0)>>4;
+        int dir1 = hashcode & 0xf;
+        int dir2 = (hashcode & 0xf0) >> 4;
         //构造新的保存目录
         String dir = savePath + "\\" + dir1 + "\\" + dir2;
         //File既可以代表文件也可以代表目录
         File file = new File(dir);
-        if(!file.exists()){
+        if (!file.exists()) {
             file.mkdirs();
         }
         return dir;
     }
 
     @RequestMapping("/download")
-    public String download(HttpServletRequest request,HttpServletResponse response,@RequestParam("id") int id){
-        try{
+    public String download(HttpServletRequest request, HttpServletResponse response, @RequestParam("id") int id) {
+        try {
             Annex annex = indexService.getAnnexById(id);
             //获取id，通过id获取各种参数  fileName,saveName,url;
             String saveName = annex.getSaveName();
 
 //            saveName = new String(saveName.getBytes("iso8859-1"),"UTF-8");
             //上传的文件都是保存在/WEB-INF/upload目录下的子目录当中
-            String fileSaveRootPath=request.getServletContext().getRealPath("/WEB-INF/upload");
+            String fileSaveRootPath = request.getServletContext().getRealPath("/WEB-INF/upload");
             //        处理文件名
-            String fileName = saveName.substring(saveName.indexOf("_")+1);
+            String fileName = saveName.substring(saveName.indexOf("_") + 1);
 //            fileName = new String(fileName.getBytes("iso8859-1"),"UTF-8");
             //通过文件名找出文件的所在目录
-            String path = findFileSavePathByFileName(saveName,fileSaveRootPath);
+            String path = findFileSavePathByFileName(saveName, fileSaveRootPath);
             //得到要下载的文件
-            File file = new File(path+File.separator+saveName);
+            File file = new File(path + File.separator + saveName);
             //如果文件不存在
-            if(!file.exists()){
+            if (!file.exists()) {
                 //文件不存在处理
             }
 
@@ -289,14 +291,14 @@ public class ManagerController extends BaseController {
             //设置缓存区
             byte[] bytes = new byte[1024];
             int len = 0;
-            while((len = in.read(bytes))>0){
+            while ((len = in.read(bytes)) > 0) {
                 os.write(bytes);
             }
             //关闭输入流
             in.close();
             //关闭输出流
             os.close();
-        }catch (UnsupportedEncodingException e){
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -306,17 +308,19 @@ public class ManagerController extends BaseController {
         return null;
 
     }
-    public String findFileSavePathByFileName(String fileName,String fileSaveRootPath){
+
+    public String findFileSavePathByFileName(String fileName, String fileSaveRootPath) {
         int hashcode = fileName.hashCode();
-        int dir1 = hashcode&0xf;
-        int dir2 = (hashcode&0xf0)>>4;
+        int dir1 = hashcode & 0xf;
+        int dir2 = (hashcode & 0xf0) >> 4;
         String dir = fileSaveRootPath + "\\" + dir1 + "\\" + dir2;
         File file = new File(dir);
-        if(!file.exists()){
+        if (!file.exists()) {
             file.mkdirs();
         }
         return dir;
     }
+
     /**
      * 编辑跳转
      */
@@ -331,7 +335,7 @@ public class ManagerController extends BaseController {
 
     @PostMapping("/editArticle/{ids}")
     @ResponseBody
-    public EduResult editArticle(@RequestBody Article article,@PathVariable("ids") String ids) {
+    public EduResult editArticle(@RequestBody Article article, @PathVariable("ids") String ids) {
         EduResult eduResult = new EduResult();
         User ut = (User) request.getSession().getAttribute(BureauConstants.USER_TOKEN);
         if (ut == null) {
@@ -339,7 +343,7 @@ public class ManagerController extends BaseController {
             eduResult.put("msg", "登录信息已经失效，请退出后重新登录！");
             return eduResult;
         }
-        eduResult = managerService.editArticle(article, ut.getId(),ids);
+        eduResult = managerService.editArticle(article, ut.getId(), ids);
         return eduResult;
     }
 
@@ -371,8 +375,8 @@ public class ManagerController extends BaseController {
     }
 
     @RequestMapping("/uploadForward")
-    public String uploadForward(){
-        return  "manager/upload_image";
+    public String uploadForward() {
+        return "manager/upload_image";
     }
 
     /**
@@ -380,14 +384,14 @@ public class ManagerController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("/imageListJson")
-    public String imageListJson(@RequestBody ImageEntity imageEntity){
+    public String imageListJson(@RequestBody ImageEntity imageEntity) {
         List<ImageEntity> list = new ArrayList<>();
         this.map = new HashMap<>();
         try {
             list = managerService.getImageList(imageEntity);
             map.put("success", true);
             map.put("list", list);
-            map.put("obj",imageEntity);
+            map.put("obj", imageEntity);
         } catch (Exception e) {
             e.printStackTrace();
             map.put("success", false);
@@ -397,67 +401,110 @@ public class ManagerController extends BaseController {
     }
 
     @RequestMapping("/addImageForward")
-    public String addImageForward(){
+    public String addImageForward() {
         return "manager/image_add";
     }
+
     // 添加图片
-    @RequestMapping(name = "addImage", method = RequestMethod.POST)
-    public String addImage(MultipartFile file){
+    @RequestMapping("/addImage")
+    @ResponseBody
+    public String addImage(HttpServletRequest request, MultipartFile file) {
         this.map = new HashMap<>();
         //记录提示信息
         String message = "";
         try {
             long size = file.getSize();
-            String name  =file.getOriginalFilename();
+            String name = file.getOriginalFilename();
             //从文件中读取输入流 输入到指定目录中
             String fileName = System.currentTimeMillis() + file.getOriginalFilename();
-            String url = savePath+ File.separator+fileName;
             //存储到文件表中，列表展示时，只展示前四个，根据时间倒叙排序
+            String savePath = request.getServletContext().getRealPath("/images");
+            String url = savePath + File.separator + fileName;
             File destFile = new File(url);
-            if(!destFile.exists()){
-                logger.error("文件不存在");
+            if (!destFile.exists()) {
                 destFile.mkdirs();
             }
-            file.transferTo(destFile);
+            outPutToDestFile(file, savePath, fileName,"2");
+//            file.transferTo(destFile);
             ImageEntity entity = new ImageEntity();
-            entity.setName(name);
+            entity.setName(mkFileName(fileName));
             entity.setUrl(url);
             entity.setChecked("N");
             managerService.addImage(entity);
-            message="添加成功";
-            map.put("success",true);
-            map.put("message",message);
-            map.put("url",url);
+            message = "上传成功";
+            map.put("success", true);
+            map.put("message", message);
+            map.put("url", url);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            message="上传失败";
-            map.put("success",false);
-            map.put("message",message);
+            message = "上传失败";
+            map.put("success", false);
+            map.put("message", message);
         }
         return JSON.toJSONString(map);
     }
 
+
+    /**
+     * @param file        需要上传的文件对象
+     * @param savePathStr 保存路径地址
+     * @param fileName    文件名称
+     */
+    private String outPutToDestFile(MultipartFile file, String savePathStr, String fileName,String flag) {
+        try {
+            InputStream fis = file.getInputStream();
+             fileName =  "1".equalsIgnoreCase(flag) ? mkFileName(fileName):fileName ;
+            //得到文件保存的名称
+            FileOutputStream fos = new FileOutputStream(savePathStr + File.separator + fileName);
+            //获取读通道
+            FileChannel readChannel = ((FileInputStream) fis).getChannel();
+            //获取读通道
+            FileChannel writeChannel = fos.getChannel();
+            //创建一个缓冲区
+            ByteBuffer buffer = ByteBuffer.allocate(1024);
+            //判断输入流中的数据是否已经读完的标识
+            int length = 0;
+            //循环将输入流读入到缓冲区当中，(len=in.read(buffer))>0就表示in里面还有数据
+            while (true) {
+                buffer.clear();
+                int len = readChannel.read(buffer);//读入数据
+                if (len < 0) {
+                    break;//读取完毕
+                }
+                buffer.flip();
+                writeChannel.write(buffer);//写入数据
+            }
+            //关闭输入流
+            fis.close();
+            //关闭输出流
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return mkFileName(fileName);
+    }
+
     @RequestMapping("/editImageForward")
-    public String editImageForward(@RequestParam("id")int id){
-      ImageEntity image =   managerService.editImageForward(id);
-      request.setAttribute("entity",image);
+    public String editImageForward(@RequestParam("id") int id) {
+        ImageEntity image = managerService.editImageForward(id);
+        request.setAttribute("entity", image);
         return "manager/image_edit";
     }
 
 
     @ResponseBody
     @RequestMapping("/delImage")
-    public String delImage(@RequestParam("id")int id){
+    public String delImage(@RequestParam("id") int id) {
         this.map = new HashMap<>();
         try {
-           int flag =  managerService.delImage(id);
-           if(flag > 0){
-               map.put("success", true);
-           }else{
-               map.put("success", false);
-               map.put("message", "删除图片失败");
-           }
+            int flag = managerService.delImage(id);
+            if (flag > 0) {
+                map.put("success", true);
+            } else {
+                map.put("success", false);
+                map.put("message", "删除图片失败");
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

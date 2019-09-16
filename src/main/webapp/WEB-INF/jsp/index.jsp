@@ -54,7 +54,7 @@
                                 <img src="<%=path%>/img/img_change/ic9.jpg" style="width: 500px; height: 328px">
                                 <%--<p></p>--%></a></li>
                             <li><a href="" target="_blank">
-                                <img src="<%=path%>/img/img_change/ic8.jpg" style="width: 500px;height: 328px">
+                                <img src="<%=path%>/img/img_change/ic11.jpg" style="width: 500px;height: 328px">
                                 <%--<p></p>--%></a></li>
                         </ul>
                     </div>

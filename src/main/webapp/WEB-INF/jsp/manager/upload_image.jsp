@@ -40,7 +40,7 @@
 <div class="col-md-12">
     <div id="data_header" class="page-header clearfix" style="margin: 0px 0 20px">
         <h1 class="pull-left">首页轮播图</h1>
-        <a href="javascript:openDialog('add',-1);" class="btn btn-info btn-sm pull-right">添加</a>
+        <a href="javascript:openDialog('add',-1);" id="addButton" class="btn btn-info btn-sm pull-right">添加</a>
     </div>
     <div class="form-inline well well-sm">
         <div class="form-group right">
@@ -99,6 +99,10 @@
             $(this).removeData("bs.modal");
         });
     })
+
+    //声明一个变量用来存储已经上传图片数量，如果大于3则不能继续上传
+
+    var uploadImgNums = 0;
     //初始化表格
     function loadData() {
         var image = {}
@@ -123,11 +127,12 @@
                         var content = '<tr>';
 
                         if (list && list.length > 0) {
+                            uploadImgNums = list.length;
                             $(list).each(function (i, e) {
                                 var html = content_html;
                                 var cno = $('#pageSize').val() * ($('#curPage').val() - 1);
                                 html = html.replace('{{id}}', (cno + i + 1))
-                                    .replace('{{title}}', e.name)
+                                    .replace('{{name}}', "<img src='/bureau/images/'"+e.name+"/>")
                                     .replace('{{createBy}}', e.createBy)
                                     .replace('{{createTime}}', e.create_date)
                                     .replace('{{is_deleted}}', '<a href="javascript:openDialog(\'edit\',' + e.id + ');" class="btn btn-info btn-sm pull-left">修改</a> <a href="javascript:openDialog(\'del\',' + e.id + ');" class="btn btn-info btn-sm pull-right">删除</a>')
@@ -139,6 +144,7 @@
                         $('#table_head').html(content);
                         $('#table_head').show();
                         initB3paginator(data.obj)
+                        checkButton()
                     }
                 },
                 error: function (data) {
@@ -146,6 +152,14 @@
                 }
             }
         )
+    }
+
+    function checkButton(){
+        if(uploadImgNums >= 3){
+            $("#addButton").addClass("disabled")
+        }else{
+            $("#addButton").removeClass("disabled")
+        }
     }
     function initB3paginator(data) {
         $("#pageSize").val(data['pageSize']);

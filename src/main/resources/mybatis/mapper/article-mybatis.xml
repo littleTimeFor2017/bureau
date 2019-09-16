@@ -123,7 +123,7 @@
         id,
         `name`,
         url,
-        data_format(create_date,'%Y-%m-%d') create_date,
+        date_format(create_date,'%Y-%m-%d') create_date,
         createBy,
         checked,
         order_no,
@@ -158,11 +158,8 @@
         select * from sys_image where id = #{id}
     </select>
 
-    <insert id="addImage">
-        insert into sys_image(
-        `name`,
-        url,
-        )
+    <insert id="addImage" parameterType="com.lixc.bureau.entity.ImageEntity">
+        insert into sys_image(`name`,url )values ( #{name},#{url} )
     </insert>
 
 </mapper>

@@ -1,12 +1,4 @@
-2019-07-03 14:02:07.911 INFO  org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext Line:993 - Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@60ec6884: startup date [Wed Jul 03 13:59:15 CST 2019]; root of context hierarchy
-2019-07-03 14:02:07.993 INFO  org.springframework.jmx.export.annotation.AnnotationMBeanExporter Line:451 - Unregistering JMX-exposed beans on shutdown
-2019-07-03 14:02:07.996 INFO  org.springframework.jmx.export.annotation.AnnotationMBeanExporter Line:183 - Unregistering JMX-exposed beans
-2019-07-03 14:02:08.003 INFO  com.alibaba.druid.pool.DruidDataSource Line:1385 - {dataSource-1} closed
-2019-07-03 15:14:43.783 INFO  org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext Line:993 - Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@148615f8: startup date [Wed Jul 03 15:13:16 CST 2019]; root of context hierarchy
-2019-07-03 15:14:43.788 INFO  org.springframework.jmx.export.annotation.AnnotationMBeanExporter Line:451 - Unregistering JMX-exposed beans on shutdown
-2019-07-03 15:14:43.789 INFO  org.springframework.jmx.export.annotation.AnnotationMBeanExporter Line:183 - Unregistering JMX-exposed beans
-2019-07-03 15:14:43.796 INFO  com.alibaba.druid.pool.DruidDataSource Line:1385 - {dataSource-1} closed
-2019-07-03 15:33:48.686 INFO  org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext Line:993 - Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@5fff53a5: startup date [Wed Jul 03 15:29:09 CST 2019]; root of context hierarchy
-2019-07-03 15:33:48.777 INFO  org.springframework.jmx.export.annotation.AnnotationMBeanExporter Line:451 - Unregistering JMX-exposed beans on shutdown
-2019-07-03 15:33:48.778 INFO  org.springframework.jmx.export.annotation.AnnotationMBeanExporter Line:183 - Unregistering JMX-exposed beans
-2019-07-03 15:33:48.789 INFO  com.alibaba.druid.pool.DruidDataSource Line:1385 - {dataSource-1} closed
+2019-09-07 18:27:26.679 INFO  org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext Line:993 - Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@56783c01: startup date [Sat Sep 07 18:26:04 CST 2019]; root of context hierarchy
+2019-09-07 18:27:26.726 INFO  org.springframework.jmx.export.annotation.AnnotationMBeanExporter Line:451 - Unregistering JMX-exposed beans on shutdown
+2019-09-07 18:27:26.726 INFO  org.springframework.jmx.export.annotation.AnnotationMBeanExporter Line:183 - Unregistering JMX-exposed beans
+2019-09-07 18:27:26.742 INFO  com.alibaba.druid.pool.DruidDataSource Line:1385 - {dataSource-1} closed
