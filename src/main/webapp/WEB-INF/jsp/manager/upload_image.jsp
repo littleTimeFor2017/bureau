@@ -43,12 +43,12 @@
         <a href="javascript:openDialog('add',-1);" id="addButton" class="btn btn-info btn-sm pull-right">添加</a>
     </div>
     <div class="form-inline well well-sm">
-        <div class="form-group right">
-            <span>名称：</span>
-            <input class="form-control" type="text" placeholder="" id="name" value="" name="sort[6]"
-                   size="10">
+        <%--<div class="form-group right">--%>
+        <%--<span>名称：</span>--%>
+        <%--<input class="form-control" type="text" placeholder="" id="name" value="" name="sort[6]"--%>
+        <%--size="10">--%>
 
-        </div>
+        <%--</div>--%>
         <div class="form-group">
             <span>发布者：</span>
             <input class="form-control" type="text" placeholder="" id="createBy" value="" name="sort[6]"
@@ -61,7 +61,7 @@
         <thead>
         <tr>
             <th>序号</th>
-            <th>名称</th>
+            <th>图片</th>
             <th>发布者</th>
             <th>发布时间</th>
             <th>操作</th>
@@ -103,6 +103,7 @@
     //声明一个变量用来存储已经上传图片数量，如果大于3则不能继续上传
 
     var uploadImgNums = 0;
+
     //初始化表格
     function loadData() {
         var image = {}
@@ -132,10 +133,10 @@
                                 var html = content_html;
                                 var cno = $('#pageSize').val() * ($('#curPage').val() - 1);
                                 html = html.replace('{{id}}', (cno + i + 1))
-                                    .replace('{{name}}', "<img src='/bureau/images/'"+e.name+"/>")
+                                    .replace('{{name}}', "<img  src=/bureau/images/" + e.thumURL + " />")
                                     .replace('{{createBy}}', e.createBy)
                                     .replace('{{createTime}}', e.create_date)
-                                    .replace('{{is_deleted}}', '<a href="javascript:openDialog(\'edit\',' + e.id + ');" class="btn btn-info btn-sm pull-left">修改</a> <a href="javascript:openDialog(\'del\',' + e.id + ');" class="btn btn-info btn-sm pull-right">删除</a>')
+                                    .replace('{{is_deleted}}', '<a href="javascript:openDialog(\'del\',' + e.id + ');" class="btn btn-info btn-sm">删除</a>')
                                 content += html;
                             })
                         } else {
@@ -143,7 +144,7 @@
                         }
                         $('#table_head').html(content);
                         $('#table_head').show();
-                        initB3paginator(data.obj)
+                        // initB3paginator(data.obj)
                         checkButton()
                     }
                 },
@@ -154,13 +155,14 @@
         )
     }
 
-    function checkButton(){
-        if(uploadImgNums >= 3){
+    function checkButton() {
+        if (uploadImgNums >= 3) {
             $("#addButton").addClass("disabled")
-        }else{
+        } else {
             $("#addButton").removeClass("disabled")
         }
     }
+
     function initB3paginator(data) {
         $("#pageSize").val(data['pageSize']);
         $("#curPage").val(data['curPage']);
@@ -192,6 +194,7 @@
             totcount: data['totCount']
         });
     }
+
     //打开添加表单
     function openDialog(type, ctId) {
         var remote_url = "";

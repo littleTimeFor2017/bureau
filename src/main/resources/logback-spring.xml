@@ -3,7 +3,7 @@
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
     <contextName>bureau</contextName>
 
-    <springProperty scop="context" name="log_dir" source="learn.log.logback.path" defaultValue="D:\kdata\bureau\logs"/>
+    <springProperty scop="context" name="log_dir" source="learn.log.logback.path" defaultValue="G:\kdata\bureau\logs"/>
 
     <!-- 定义日志文件 输入位置 -->
     <!--<property name="log_dir" value="/kdata/app/logs/learn_mobile" />-->

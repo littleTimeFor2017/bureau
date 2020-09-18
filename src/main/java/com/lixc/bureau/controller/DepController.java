@@ -18,7 +18,7 @@ public class DepController extends BaseController {
     private IDepartmentService departmentService;
 
     //获取所有的部门  显示在添加公告页面
-    @RequestMapping("/getAllDeps")
+    @RequestMapping(value="/getAllDeps")
     @ResponseBody
     public String getAllDeps(){
         map = new HashMap<>();

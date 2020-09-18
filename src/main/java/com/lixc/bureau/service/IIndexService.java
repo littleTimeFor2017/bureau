@@ -2,6 +2,7 @@ package com.lixc.bureau.service;
 
 import com.lixc.bureau.entity.Annex;
 import com.lixc.bureau.entity.Article;
+import com.lixc.bureau.entity.ImageEntity;
 import com.lixc.bureau.entity.User;
 
 import java.util.List;
@@ -34,6 +35,8 @@ public interface IIndexService {
      * @return
      */
     List<Article> getAllArticles(Article article, int c_id);
+
+    List<ImageEntity> getImageList();
 
 
 

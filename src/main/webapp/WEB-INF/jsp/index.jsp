@@ -47,15 +47,22 @@
                             </ul>
                         </div>
                         <ul class="oUlplay">
-                            <li><a href="" target="_blank">
-                                <img src="<%=path%>/img/img_change/ic10.jpg" style="width: 500px; height: 328px;">
-                                <%--<p>&lt;%&ndash;此处文字后续补上&ndash;%&gt;</p>--%></a></li>
-                            <li><a href="" target="_blank">
-                                <img src="<%=path%>/img/img_change/ic9.jpg" style="width: 500px; height: 328px">
-                                <%--<p></p>--%></a></li>
-                            <li><a href="" target="_blank">
-                                <img src="<%=path%>/img/img_change/ic11.jpg" style="width: 500px;height: 328px">
-                                <%--<p></p>--%></a></li>
+                            <c:forEach var="obj" items="${imageList}">
+                                <li>
+                                    <a href="" target="_blank" class="thumbnail">
+                                        <img src="/bureau/images/${obj.name}" style="width: 500px; height: 328px;">
+                                            <%--<p>&lt;%&ndash;此处文字后续补上&ndash;%&gt;</p>--%></a></li>
+                                </li>
+                            </c:forEach>
+                            <%--<li><a href="" target="_blank">--%>
+                                <%--<img src="<%=path%>/img/img_change/ic10.jpg" style="width: 500px; height: 328px;">--%>
+                                <%--&lt;%&ndash;<p>&lt;%&ndash;此处文字后续补上&ndash;%&gt;</p>&ndash;%&gt;</a></li>--%>
+                            <%--<li><a href="" target="_blank">--%>
+                                <%--<img src="<%=path%>/img/img_change/ic9.jpg" style="width: 500px; height: 328px">--%>
+                                <%--&lt;%&ndash;<p></p>&ndash;%&gt;</a></li>--%>
+                            <%--<li><a href="" target="_blank">--%>
+                                <%--<img src="<%=path%>/img/img_change/ic11.jpg" style="width: 500px;height: 328px">--%>
+                                <%--&lt;%&ndash;<p></p>&ndash;%&gt;</a></li>--%>
                         </ul>
                     </div>
                 </div>

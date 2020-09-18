@@ -123,6 +123,7 @@
         id,
         `name`,
         url,
+        thumURL,
         date_format(create_date,'%Y-%m-%d') create_date,
         createBy,
         checked,
@@ -136,7 +137,6 @@
         <if test="createBy != null and createBy != ''">
             and createBy like concat('%',#{createBy},'%')
         </if>
-        limit #{start} ,#{end}
     </select>
 
     <select id="selectImageCount" resultType="integer">
@@ -159,7 +159,7 @@
     </select>
 
     <insert id="addImage" parameterType="com.lixc.bureau.entity.ImageEntity">
-        insert into sys_image(`name`,url )values ( #{name},#{url} )
+        insert into sys_image(`name`,url,thumURL,create_date,createBy )values ( #{name},#{url},#{thumURL},#{create_date},#{createBy} )
     </insert>
 
 </mapper>

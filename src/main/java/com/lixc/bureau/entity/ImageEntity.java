@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class ImageEntity  extends  Paginator{
+public class ImageEntity extends Paginator {
 
     private int id;
 
@@ -22,6 +22,9 @@ public class ImageEntity  extends  Paginator{
     //使用场景
     private int use_position;
 
-    private int  order_no;
+    private int order_no;
+    //缩略图路径(保存名称)
+    private String thumURL;
+
 
 }

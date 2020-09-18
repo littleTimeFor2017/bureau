@@ -147,44 +147,10 @@
         if(currentId == '9'){
             $('#system_date').load(path + '/due/dueForward?r='+Math.random());
         }else  if(currentId == '11'){
+            //11表示首页轮播图
             $('#system_date').load(path + '/manager/uploadForward?r='+Math.random());
         }else{
             $('#system_date').load(path + '/manager/gzdtForward?id=' + currentId);
         }
-        // if (currentId == 'menu_setting') {
-        //     $('#system_date').load(path + '/system/goSetting.action');
-        // } else if (currentId == '-1') {
-        //     $('#system_date').load(path + '/index');
-        // } else if (currentId == '1') {
-        //     $('#system_date').load(path + '/manager/gzdtForward');
-        // } else if (currentId == '2') {
-        //     $('#system_date').load(path + '/admin/report/user_top_10.jsp');
-        // } else if (currentId == '3') {
-        //     $('#system_date').load(path + '/admin/system/report/sys_login_info.jsp');
-        // } else if (currentId == '4') {
-        //     $('#system_date').load(path + '/admin/report/util/inter_index.jsp');
-        // } else if (currentId == 'SCR') {
-        //     $('#system_date').load(path + '/admin/report/util/credit_index.jsp');
-        // } else if (currentId == '5') {
-        //     $('#system_date').load(path + '/admin/system/report/course_count_report.jsp');
-        // } else if (currentId == '6') {
-        //     $('#system_date').load(path + '/admin/system/report/course_study_report.jsp');
-        // } else if (currentId == '7') {
-        //     $('#system_date').load(path + '/admin/system/report/course_lh_study_report.jsp');
-        // } else if (currentId == '8') {
-        //     $('#system_date').load(path + '/admin/system/report/class_count_report.jsp');
-        // } else if (currentId == '9') {
-        //     $('#system_date').load(path + '/admin/system/report/class_study_report.jsp');
-        // } else if (currentId == '10') {
-        //     $('#system_date').load(path + '/admin/system/report/class_course_report.jsp');
-        // } else if (currentId == '11') {
-        //     $('#system_date').load(path + '/admin/system/report/exam_count_report.jsp');
-        // } else if (currentId == '12') {
-        //     $('#system_date').load(path + '/admin/system/report/document_view_report.jsp');
-        // } else if (currentId == '13') {
-        //     $('#system_date').load(path + '/admin/system/report/sms_count_report.jsp');
-        // } else if (currentId == '14') {
-        //     $('#system_date').load(path + '/admin/system/report/sms_detail.jsp');
-        // }
     }
 </script>

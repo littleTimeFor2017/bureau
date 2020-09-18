@@ -58,6 +58,8 @@ public class IndexController extends BaseController {
         request.setAttribute("dueList", dueList);
         List<Article> careList = service.getCareList("7", 10);
         request.setAttribute("careList", careList);
+        List<ImageEntity> imageList = service.getImageList();
+        request.setAttribute("imageList", imageList);
         return "index";
     }
 

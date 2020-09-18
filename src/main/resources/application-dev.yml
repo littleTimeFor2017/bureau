@@ -9,6 +9,8 @@ spring:
     username: root
     password: lixc
     driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+
   redis:
     jedis:
       pool:
@@ -32,7 +34,7 @@ spring:
       suffix: .jsp
   #  static-path-pattern: /**
   resources:
-    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:///D:/test/,file:///E:/git/bureau/src/main/webapp/WEB-INF/images/
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:///D:/uefile/,file:///C:/Users/11930/Desktop/temp
 
 
 
