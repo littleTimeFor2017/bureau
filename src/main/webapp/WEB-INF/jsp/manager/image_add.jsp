@@ -12,14 +12,6 @@
 <form id="paper-add-form" action="<%=basePath %>manager/addImage" method="post" class="form-horizontal"
       enctype="multipart/form-data">
     <div class="modal-body">
-        <%--<div class="form-group">--%>
-        <%--<div class="col-md-2 control-label">--%>
-        <%--<label>标题</label>--%>
-        <%--</div>--%>
-        <%--<div class="col-md-9 controls">--%>
-        <%--<input type="text" class="form-control" id="Atitle" name="title" placeholder="请输入标题">--%>
-        <%--</div>--%>
-        <%--</div>--%>
         <div class="form-group">
             <div class="col-md-2 control-label">
                 <label>图片</label>
@@ -30,18 +22,11 @@
                 <span><img id="photourlShow" src="" width="300" height="197" style="display: none"/></span>
             </div>
         </div>
-        <div>
+        <div class="form-group"></div>
+        <div class="form-group">
             <div class="col-md-9" style="margin-left: 20px;margin-bottom: 5px;">上传时最好选择图片大小：500*328</div>
+            <div class="col-md-9" style="margin-left: 20px;margin-bottom: 5px;">首页轮播图最好不要超过三张</div>
         </div>
-        <%--<div class="form-group">--%>
-        <%--<div class="col-md-2 control-label">--%>
-        <%--<label>是否展示</label>--%>
-        <%--</div>--%>
-        <%--<div class="col-md-9 controls">--%>
-        <%--<label><input type="radio" name="is_default"  value="Y"/> 是</label> &nbsp;--%>
-        <%--<label><input type="radio" name="is_default"  value="N" checked/> 否</label>--%>
-        <%--</div>--%>
-        <%--</div>--%>
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary pull-right" type="button" id="add-paper-btn">提交</button>
@@ -53,8 +38,6 @@
     var path = '<%=path%>'
     $(document).ready(function () {
         $('#paper-add-form').bootstrapValidator({}).on('success.form.bv', function (e) {
-            // var description = ue.getContent();
-            // $("#description").val(description);
             e.preventDefault();
             var fd = new FormData($("#paper-add-form")[0]);
             fd.append('file', $('#logoFile')[0].files[0]);
@@ -76,8 +59,8 @@
             url: path + "/manager/addImage",
             data: data,
             cache: false,
-            contentType: false,    //不可缺
-            processData: false,    //不可缺
+            contentType: false, //不可缺
+            processData: false, //不可缺
             dataType: "json",
             success: function (ret) {
                 if (ret && ret.success) {

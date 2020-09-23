@@ -144,12 +144,15 @@
     function changeMenuPage(currentId) {
         // currentMenu = currentId;
         //10 表示今日值班
-        if(currentId == '9'){
-            $('#system_date').load(path + '/due/dueForward?r='+Math.random());
-        }else  if(currentId == '11'){
+        if (currentId == '9') {
+            $('#system_date').load(path + '/due/dueForward?r=' + Math.random());
+        } else if (currentId == '11') {
             //11表示首页轮播图
-            $('#system_date').load(path + '/manager/uploadForward?r='+Math.random());
-        }else{
+            $('#system_date').load(path + '/manager/uploadForward?r=' + Math.random());
+        } else if (currentId == '12') {
+            //11表示首页轮播图
+            $('#system_date').load(path + '/manager/siteForward?r=' + Math.random());
+        } else {
             $('#system_date').load(path + '/manager/gzdtForward?id=' + currentId);
         }
     }

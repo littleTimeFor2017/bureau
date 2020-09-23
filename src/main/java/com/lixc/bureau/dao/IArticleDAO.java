@@ -58,4 +58,12 @@ public interface IArticleDAO {
     int deleteImage(int id);
 
     int addImage(ImageEntity imageEntity);
+
+    /**
+     * 物理删除 文章
+     *
+     * @param id
+     * @return
+     */
+    int deleteArticlePhy(Integer id);
 }

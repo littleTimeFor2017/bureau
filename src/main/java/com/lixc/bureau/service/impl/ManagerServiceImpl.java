@@ -80,8 +80,12 @@ public class ManagerServiceImpl extends PaginatorBean implements IManagerService
                 depDAO.addArticle_dep_publish(article_dep_publish);
             }
         }
-        //上栓
         return EduResult.ok();
+    }
+
+    @Override
+    public void addArticleOnly(Article article) {
+        dao.addArticle(article);
     }
 
     @Override
@@ -162,7 +166,8 @@ public class ManagerServiceImpl extends PaginatorBean implements IManagerService
     }
 
 
-    public int addImage(ImageEntity imageEntity){
+    @Override
+    public int addImage(ImageEntity imageEntity) {
         return dao.addImage(imageEntity);
     }
 

@@ -60,6 +60,10 @@ public class IndexController extends BaseController {
         request.setAttribute("careList", careList);
         List<ImageEntity> imageList = service.getImageList();
         request.setAttribute("imageList", imageList);
+        /**
+         * TODO 增加网站专栏模块list
+         */
+
         return "index";
     }
 

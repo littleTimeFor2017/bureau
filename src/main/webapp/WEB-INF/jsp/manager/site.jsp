@@ -5,7 +5,7 @@
 %>
 <html>
 <head>
-    <title>首页轮播图管理</title>
+    <title>网站专栏管理</title>
     <link href="<%=path %>/common/bootstrap/3.3.4/css/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="<%=path %>/common/bootstrap/3.3.4/css/bootstrapSwitch.css">
     <link href="<%=path%>/common/bootstrap/colorpicker/css/bootstrap-colorpicker.min.css" rel="stylesheet">
@@ -18,7 +18,8 @@
     <link rel="stylesheet" href="<%=path%>/common/jquery/dateRangePicker/daterangepicker.css">
     <link href="<%=path %>/common/css/details_top.css" rel="stylesheet">
     <script src="<%=path %>/common/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="<%=path %>/common/bootstrap/validator/js/bootstrapValidator.min.js"></script>
+    <script type="text/javascript" src="<%=path %>
+        /common/bootstrap/validator/js/bootstrapValidator.min.js"></script>
     <script type="text/javascript" src="<%=path %>/common/bootstrap/validator/js/language/zh_CN.js"></script>
     <script type="text/javascript" src="<%=path %>/common/bootstrap/paginator/bootstrap-paginator.min.js"></script>
     <script type="text/javascript" src="<%=path %>/common/bootstrap/paginator/b3paginator.js"></script>
@@ -34,21 +35,15 @@
     <script type="text/javascript"
             src="<%=path %>/common/bootstrap/colorpicker/js/bootstrap-colorpicker.min.js"></script>
 </head>
-<%--展示图片列表 展示  创建时间   图片名称  序号   图片url  是否展示
+<%--展示图片列表 展示  创建时间   图片名称  序号   图片url
 添加图片：上传图片附件，是否选中--%>
 <body class="index">
 <div class="col-md-12">
     <div id="data_header" class="page-header clearfix" style="margin: 0px 0 20px">
-        <h1 class="pull-left">首页轮播图</h1>
+        <h1 class="pull-left">网站专栏</h1>
         <a href="javascript:openDialog('add',-1);" id="addButton" class="btn btn-info btn-sm pull-right">添加</a>
     </div>
     <div class="form-inline well well-sm">
-        <%--<div class="form-group right">--%>
-        <%--<span>名称：</span>--%>
-        <%--<input class="form-control" type="text" placeholder="" id="name" value="" name="sort[6]"--%>
-        <%--size="10">--%>
-
-        <%--</div>--%>
         <div class="form-group">
             <span>发布者：</span>
             <input class="form-control" type="text" placeholder="" id="createBy" value="" name="sort[6]"
@@ -64,7 +59,7 @@
             <th>图片</th>
             <th>发布者</th>
             <th>发布时间</th>
-            <th>展示位置</th>
+            <th>是否展示</th>
             <th>操作</th>
         </tr>
         </thead>
@@ -74,7 +69,7 @@
             <td>{{name}}</td>
             <td>{{createBy}}</td>
             <td>{{createTime}}</td>
-            <td>{{usePosition}}</td>
+            <td>{{is_show}}</td>
             <td>{{is_deleted}}</td>
         </tr>
         </tbody>
@@ -86,7 +81,8 @@
     <input type="hidden" id="pageSize" value="15"/>
     <input type="hidden" id="curPage" value="1"/>
     <input type="hidden" id="totCount" value="100000"/>
-    <div id="dModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div id="dModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content"></div>
         </div>
@@ -102,9 +98,6 @@
         });
     })
 
-    // //声明一个变量用来存储已经上传图片数量，如果大于3则不能继续上传
-    // var uploadImgNums = 0;
-
     //初始化表格
     function loadData() {
         var image = {}
@@ -113,7 +106,7 @@
         image.pageSize = $('#pageSize').val();
         image.curPage = $('#curPage').val();
         $.ajax({
-                url: path + '/manager/imageListJson?r=' + Math.random(),
+                url: path + '/site/list?r=' + Math.random(),
                 contentType: 'application/json',
                 data: JSON.stringify(image),
                 type: 'POST',
@@ -129,16 +122,16 @@
                         var content = '<tr>';
 
                         if (list && list.length > 0) {
-                            uploadImgNums = list.length;
                             $(list).each(function (i, e) {
                                 var html = content_html;
                                 var cno = $('#pageSize').val() * ($('#curPage').val() - 1);
                                 html = html.replace('{{id}}', (cno + i + 1))
-                                    .replace('{{name}}', "<img  src=" + e.thumURL + " />")
+                                    .replace('{{name}}', "<img src=/bureau/images/" + e.thumURL + " />")
                                     .replace('{{createBy}}', e.createBy)
-                                    .replace('{{usePosition}}', e.use_position)
                                     .replace('{{createTime}}', e.create_date)
-                                    .replace('{{is_deleted}}', '<a href="javascript:openDialog(\'del\',' + e.id + ');" class="btn btn-info btn-sm">删除</a>')
+                                    .replace('{{is_deleted}}', '<a href="javascript:openDialog(\'del\',' + e.id + ');" class="btn btn-info
+                                btn - sm
+                                ">删除</a>')
                                 content += html;
                             })
                         } else {
@@ -147,7 +140,7 @@
                         $('#table_head').html(content);
                         $('#table_head').show();
                         // initB3paginator(data.obj)
-                        // checkButton()
+                        checkButton()
                     }
                 },
                 error: function (data) {
@@ -156,14 +149,6 @@
             }
         )
     }
-
-    // function checkButton() {
-    //     if (uploadImgNums >= 3) {
-    //         $("#addButton").addClass("disabled")
-    //     } else {
-    //         $("#addButton").removeClass("disabled")
-    //     }
-    // }
 
     function initB3paginator(data) {
         $("#pageSize").val(data['pageSize']);
@@ -201,16 +186,16 @@
     function openDialog(type, ctId) {
         var remote_url = "";
         if (type == "add") {
-            remote_url = path + "/manager/addImageForward?&r=" + Math.random();
+            remote_url = path + "/site/addForward?&r=" + Math.random();
             $("#dModal").modal({backdrop: 'static', keyboard: false, show: true, remote: remote_url});
         }
         if (type == "edit") {
-            remote_url = path + "/manager/editImageForward?id=" + ctId + "&r=" + Math.random();
+            remote_url = path + "/site/updateForward?id=" + ctId + "&r=" + Math.random();
             $("#dModal").modal({backdrop: 'static', keyboard: false, show: true, remote: remote_url});
         }
         if (type == "del") {
             layer.confirm("是否删除此数据？", {icon: 3, title: '温馨提示'}, function (index) {
-                remote_url = path + "/manager/delImage?id=" + ctId + "&r=" + Math.random();
+                remote_url = path + "/site/delete?id=" + ctId + "&r=" + Math.random();
                 $.ajax({
                     url: remote_url,
                     dataType: 'json',

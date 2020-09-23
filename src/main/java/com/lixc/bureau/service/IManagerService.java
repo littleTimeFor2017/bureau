@@ -21,6 +21,8 @@ public interface IManagerService {
 
     EduResult addArticle(Article article, int user_id, String ids);
 
+    void addArticleOnly(Article article);
+
     EduResult editArticle(Article article, int user_id, String ids);
 
     EduResult delArticle(Article article, int user_id);

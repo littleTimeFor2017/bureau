@@ -40,9 +40,6 @@ public class ManagerController extends BaseController {
     //文件保存路径
     @Value("${bureau.path.savePath}")
     private String savePath;
-//    //临时文件存储目录
-//    @Value("${bureau.path.tempPath}")
-//    private String tempPath;
 
     @Autowired
     private IManagerService managerService;
@@ -84,6 +81,12 @@ public class ManagerController extends BaseController {
         CategoryEntity categoryEntityById = managerService.getCategoryEntityById(id);
         request.setAttribute("categoryEntity", categoryEntityById);
         return "manager/gzdt";
+    }
+
+    //    跳转到工作动态列表页
+    @RequestMapping("/siteForward")
+    public String siteForward() {
+        return "manager/site";
     }
 
     /**
@@ -135,6 +138,17 @@ public class ManagerController extends BaseController {
 
     }
 
+    /**
+     * 上传文件方法
+     *
+     * @param request
+     * @param file
+     * @return
+     */
+    public String uploadImage(HttpServletRequest request, MultipartFile file) {
+        return null;
+    }
+
 
     @RequestMapping("/uploadFile")
     @ResponseBody
@@ -161,7 +175,7 @@ public class ManagerController extends BaseController {
             //确定文件上传的具体路径   /1/12
             String savePathStr = mkFilePath(savePath, fileName);
             //获取item中的上传文件的输入流
-            outPutToDestFile(file, savePathStr, fileName,"1");
+            outPutToDestFile(file, savePathStr, fileName, "1");
             Annex annex = new Annex();
             annex.setFileName(originName);
             annex.setSaveName(fileName);
@@ -176,11 +190,6 @@ public class ManagerController extends BaseController {
 
         }
         return JSON.toJSONString(map);
-    }
-
-    //生成上传文件的文件名，文件名以：uuid+"_"+文件的原始名称
-    public String mkFileName(String fileName) {
-        return UUID.randomUUID().toString() + "_" + fileName;
     }
 
     public String mkFilePath(String savePath, String fileName) {
@@ -205,12 +214,9 @@ public class ManagerController extends BaseController {
             //获取id，通过id获取各种参数  fileName,saveName,url;
             String saveName = annex.getSaveName();
 
-//            saveName = new String(saveName.getBytes("iso8859-1"),"UTF-8");
-            //上传的文件都是保存在/WEB-INF/upload目录下的子目录当中
             String fileSaveRootPath = request.getServletContext().getRealPath("/WEB-INF/upload");
             //        处理文件名
             String fileName = saveName.substring(saveName.indexOf("_") + 1);
-//            fileName = new String(fileName.getBytes("iso8859-1"),"UTF-8");
             //通过文件名找出文件的所在目录
             String path = findFileSavePathByFileName(saveName, fileSaveRootPath);
             //得到要下载的文件
@@ -219,7 +225,6 @@ public class ManagerController extends BaseController {
             if (!file.exists()) {
                 //文件不存在处理
             }
-
             //设置响应头，控制浏览器下载该文件
             response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
             //读取要下载的文件，保存到文件输入流
@@ -230,7 +235,7 @@ public class ManagerController extends BaseController {
             byte[] bytes = new byte[1024];
             int len = 0;
             while ((len = in.read(bytes)) > 0) {
-                os.write(bytes);
+                os.write(bytes, 0, len);
             }
             //关闭输入流
             in.close();
@@ -342,7 +347,6 @@ public class ManagerController extends BaseController {
     public String addImageForward() {
         return "manager/image_add";
     }
-
     // 添加图片
     @RequestMapping("/addImage")
     @ResponseBody
@@ -352,7 +356,7 @@ public class ManagerController extends BaseController {
         String message = "";
         try {
             User ut = (User) request.getSession().getAttribute(BureauConstants.USER_TOKEN);
-            if(ut == null){
+            if (ut == null) {
                 message = "上传失败,请重新登录";
                 map.put("success", false);
                 map.put("message", message);
@@ -363,11 +367,11 @@ public class ManagerController extends BaseController {
             //从文件中读取输入流 输入到指定目录中
             String fileName = System.currentTimeMillis() + file.getOriginalFilename();
             //存储到文件表中，列表展示时，只展示前四个，根据时间倒叙排序
-//            String savePath = request.getServletContext().getRealPath("/WEB-INF/images");
+            String savePath = request.getServletContext().getRealPath("/WEB-INF/images");
             String url = savePath + File.separator + fileName;
-            outPutToDestFile(file, savePath, fileName,"2");
+            outPutToDestFile(file, savePath, fileName, "2");
 //            file.transferTo(destFile);
-            String thumURL = thumbnailService.thumbnail(file,savePath);
+            String thumURL = thumbnailService.thumbnail(file, savePath);
             ImageEntity entity = new ImageEntity();
             entity.setName(fileName);
             entity.setUrl(url);
@@ -397,7 +401,7 @@ public class ManagerController extends BaseController {
      * @param savePathStr 保存路径地址
      * @param fileName    文件名称
      */
-    private String outPutToDestFile(MultipartFile file, String savePathStr, String fileName,String flag) {
+    private String outPutToDestFile(MultipartFile file, String savePathStr, String fileName, String flag) {
         try {
             InputStream fis = file.getInputStream();
 //             fileName =  "1".equalsIgnoreCase(flag) ? mkFileName(fileName):fileName ;

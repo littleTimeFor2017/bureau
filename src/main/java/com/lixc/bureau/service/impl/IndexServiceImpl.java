@@ -127,6 +127,7 @@ public class IndexServiceImpl extends PaginatorBean implements IIndexService {
         return map;
     }
 
+    @Override
     public boolean validateIsSuper(int user_id) {
         int count = userDao.getUserById(user_id);
         return count > 0;

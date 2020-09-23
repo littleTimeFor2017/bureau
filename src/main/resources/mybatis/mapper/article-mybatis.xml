@@ -5,11 +5,15 @@
 
 
     <select id="getCategoryEntityById" resultType="com.lixc.bureau.entity.CategoryEntity">
-        SELECT  * from sys_category where id= #{id}
+        SELECT *
+        from sys_category
+        where id = #{id}
     </select>
 
     <select id="getCategoryEntityByType" resultType="com.lixc.bureau.entity.CategoryEntity">
-        SELECT  * from sys_category where type= #{type}
+        SELECT *
+        from sys_category
+        where type = #{type}
     </select>
     <select id="getArticals" resultType="com.lixc.bureau.entity.Article">
         SELECT id,title,createTime,createBy ,updateTime,updateBy from sys_article where is_deleted = 'N'
@@ -28,27 +32,38 @@
         </if>
     </select>
     <select id="getAllArticlesByCid" resultType="com.lixc.bureau.entity.Article">
-        SELECT id,content,title,createTime from sys_article where is_deleted = 'N'
-        and c_id = #{c_id}
-        order  by createTime desc
-         limit #{start},#{end}
+        SELECT id, content, title, createTime
+        from sys_article
+        where is_deleted = 'N'
+          and c_id = #{c_id}
+        order by createTime desc
+        limit #{start},#{end}
     </select>
     <select id="getAllArticleCountByCid" resultType="java.lang.Integer">
-        SELECT count(1) from sys_article where is_deleted = 'N'
-        and c_id = #{c_id}
-        order  by createTime desc
+        SELECT count(1)
+        from sys_article
+        where is_deleted = 'N'
+          and c_id = #{c_id}
+        order by createTime desc
     </select>
 
 
     <select id="getArticleById" resultType="com.lixc.bureau.entity.Article">
-        SELECT * from sys_article  WHERE  `id` = #{id}  and is_deleted= 'N'
+        SELECT *
+        from sys_article
+        WHERE `id` = #{id}
+          and is_deleted = 'N'
     </select>
     <select id="getAnnexById" resultType="com.lixc.bureau.entity.Annex">
-        SELECT * from sys_annex  WHERE  `id` = #{id}
+        SELECT *
+        from sys_annex
+        WHERE `id` = #{id}
     </select>
 
     <select id="getAllCategorise" resultType="com.lixc.bureau.entity.CategoryEntity">
-        SELECT * from sys_category order by id asc
+        SELECT *
+        from sys_category
+        order by id asc
     </select>
 
     <select id="getArticleListByCID" parameterType="com.lixc.bureau.entity.Article"
@@ -77,48 +92,44 @@
     </select>
 
     <insert id="addArticle" useGeneratedKeys="true" keyProperty="id">
-    INSERT INTO sys_article (
-        c_id,
-        title,
-        content,
-        createTime,
-        createBy,
-        a_id
-    )
-    VALUES
-        (
-            #{c_id},
-            #{title},
-            #{content},
-            NOW(),
-            #{createBy},
-            #{a_id}
-        )
+        INSERT INTO sys_article (c_id,
+                                 title,
+                                 content,
+                                 createTime,
+                                 createBy,
+                                 a_id)
+        VALUES (#{c_id},
+                #{title},
+                #{content},
+                NOW(),
+                #{createBy},
+                #{a_id})
     </insert>
 
     <update id="editArticle">
-        update  sys_article set c_id= #{article.c_id},
-        title = #{article.title},
-        content = #{article.content},
-        updateTime = now(),
-        updateBy = #{user_id}
+        update sys_article
+        set c_id= #{article.c_id},
+            title = #{article.title},
+            content = #{article.content},
+            updateTime = now(),
+            updateBy = #{user_id}
         where id = #{article.id}
-        and is_deleted= 'N'
+          and is_deleted = 'N'
     </update>
     <update id="updateArticle">
-        update  sys_article set
-          is_deleted= #{article.is_deleted},
-          updateTime = now(),
-          updateBy = #{user_id}
+        update sys_article
+        set is_deleted= #{article.is_deleted},
+            updateTime = now(),
+            updateBy = #{user_id}
         where id = #{article.id}
     </update>
     <insert id="addAnnex" useGeneratedKeys="true" keyProperty="id">
-        insert into sys_annex (fileName,saveName,url,create_time) values (
-          #{fileName},#{saveName},#{url},now()
-        )
+        insert into sys_annex (fileName, saveName, url, create_time)
+        values (#{fileName}, #{saveName}, #{url}, now())
     </insert>
 
-    <select id="selectImageList" parameterType="com.lixc.bureau.entity.ImageEntity" resultType="com.lixc.bureau.entity.ImageEntity">
+    <select id="selectImageList" parameterType="com.lixc.bureau.entity.ImageEntity"
+            resultType="com.lixc.bureau.entity.ImageEntity">
         select
         id,
         `name`,
@@ -140,7 +151,7 @@
     </select>
 
     <select id="selectImageCount" resultType="integer">
-        select count(1) from  sys_image
+        select count(1) from sys_image
         where 1= 1
         <if test="name != null and name != ''">
             and `name` like concat('%',#{name},'%')
@@ -151,15 +162,25 @@
     </select>
 
     <delete id="deleteImage">
-        delete from sys_image where id =#{id}
+        delete
+        from sys_image
+        where id = #{id}
+    </delete>
+    <delete id="deleteArticlePhy">
+        delete
+        from sys_article
+        where id = #{id}
     </delete>
 
     <select id="selectImageByID" parameterType="integer" resultType="com.lixc.bureau.entity.ImageEntity">
-        select * from sys_image where id = #{id}
+        select *
+        from sys_image
+        where id = #{id}
     </select>
 
-    <insert id="addImage" parameterType="com.lixc.bureau.entity.ImageEntity">
-        insert into sys_image(`name`,url,thumURL,create_date,createBy )values ( #{name},#{url},#{thumURL},#{create_date},#{createBy} )
+    <insert id="addImage" parameterType="com.lixc.bureau.entity.ImageEntity" useGeneratedKeys="true" keyColumn="id">
+        insert into sys_image(`name`, url, thumURL, create_date, createBy)
+        values (#{name}, #{url}, #{thumURL}, #{create_date}, #{createBy})
     </insert>
 
 </mapper>
