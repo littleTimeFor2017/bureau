@@ -4,10 +4,14 @@ import lombok.Data;
 
 import java.util.Date;
 
+/**
+ * @author 11930
+ */
 @Data
 public class ImageEntity extends Paginator {
 
-    private int id;
+
+    private Integer id;
 
     private String url;
 

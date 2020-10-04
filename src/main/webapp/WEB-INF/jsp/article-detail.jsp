@@ -65,7 +65,7 @@
             <% } %>
             </c:if>
             <input class="btn btn-warning well-p" type="button" name="goBack" style="margin-left: 30px;"
-                   onclick="goBack('index')" value="返回"></input>
+                   onclick="goBack('index','${fromSite}','${siteId}')" value="返回"></input>
         </div>
         <form id="form" action="/bureau/sign" method="post">
             <div id="showDiv" style="display: none">
@@ -312,9 +312,14 @@
         //$("html,body").animate({scrollTop:0},1);
     }
 
-    function goBack(type) {
-        var url = path + "/index?r=" + Math.random();
-        window.location.href = url;
+    function goBack(type,fromSite,siteId) {
+    var url = "";
+    if(!fromSite){
+    url = path + "/index?r=" + Math.random();
+    }else{
+    url = path+"/siteDetailForwardBySiteId?id="+siteId;
+    }
+    window.location.href = url;
     }
 </script>
 </body>

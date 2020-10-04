@@ -1,32 +1,25 @@
 package com.lixc.bureau.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.lixc.bureau.back.SiteBack;
 import com.lixc.bureau.constants.BureauConstants;
-import com.lixc.bureau.entity.SysSite;
-import com.lixc.bureau.entity.User;
+import com.lixc.bureau.entity.*;
+import com.lixc.bureau.enums.DictTypeEnum;
 import com.lixc.bureau.query.SiteQuery;
-import com.lixc.bureau.service.IManagerService;
+import com.lixc.bureau.service.DictService;
+import com.lixc.bureau.service.IIndexService;
 import com.lixc.bureau.service.ISiteService;
-import com.lixc.bureau.service.IThumbnailService;
+import com.lixc.bureau.util.EduResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @className: SiteController
@@ -47,11 +40,22 @@ public class SiteController extends BaseController {
     private String savePath;
 
     @Autowired
-    private IThumbnailService thumbnailService;
+    private DictService dictService;
 
 
     @Autowired
-    private IManagerService managerService;
+    private IIndexService indexService;
+
+
+    /**
+     * 跳转到网站专栏页面
+     *
+     * @return
+     */
+    @RequestMapping("/siteForward")
+    public String siteForward() {
+        return "manager/site";
+    }
 
     /**
      * 查询专栏列表
@@ -59,19 +63,199 @@ public class SiteController extends BaseController {
      * @return
      */
     @RequestMapping("/list")
-    public String list(@RequestBody SysSite site) {
-        List<SysSite> list = siteService.list(site);
-        return JSON.toJSONString(list);
+    @ResponseBody
+    public String list(@RequestBody Site site) {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            List<Site> list = siteService.list(site);
+            map.put("success", true);
+            map.put("list", list);
+            map.put("obj", site);
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("success", false);
+            map.put("message", "查询专栏列表数据异常");
+        }
+        return JSON.toJSONStringWithDateFormat(map, "yyyy-MM-dd");
     }
 
     /**
-     * 添加网站专栏设置
+     * 添加网站专栏设置对应文章跳转
      *
      * @return
      */
     @RequestMapping("/addForward")
-    public String addForward() {
+    public String addForward(@RequestParam("id") int id) {
+        //查询所有属于图片条件模块
+        List<Dict> dictByType = dictService.getDictByType(DictTypeEnum.DICT_TYPE_ENUM_CHILDCATEGORY.getCode());
+        request.getSession().setAttribute("list", dictByType);
+        request.getSession().setAttribute("id", id);
         return "manager/site_add";
+    }
+
+    /**
+     * 在网站专栏模块添加文章
+     *
+     * @param request
+     * @param siteQuery
+     * @return
+     */
+    @RequestMapping(value = "/addArticle", method = RequestMethod.POST)
+    @ResponseBody
+    public EduResult addArticle(HttpServletRequest request,
+                                @RequestBody SiteQuery siteQuery
+    ) {
+        EduResult eduResult = new EduResult();
+        User ut = (User) request.getSession().getAttribute(BureauConstants.USER_TOKEN);
+        if (ut == null) {
+            eduResult.put("success", false);
+            eduResult.put("msg", "您无权查看！");
+            return eduResult;
+        }
+        siteQuery.setUserName(ut.getUserName());
+        try {
+            siteService.addArticle(siteQuery);
+            log.info("添加文章成功");
+        } catch (Exception e) {
+            log.error("添加文章失败，请联系管理员");
+            return EduResult.error("添加文章失败，请联系管理员");
+        }
+        return EduResult.ok();
+    }
+
+    /**
+     * 修改网站专栏文章跳转
+     *
+     * @return
+     */
+    @RequestMapping("/editArticleForward")
+    public String editArticleForward(@RequestParam("id") int id, @RequestParam("siteId") int siteId) {
+        Article articleById = indexService.getArticleById(id);
+        request.getSession().setAttribute("articleById", articleById);
+        request.getSession().setAttribute("siteId", siteId);
+        return "manager/site_article_update";
+    }
+
+    /**
+     * 获取选中模块json
+     *
+     * @param id
+     * @param siteId
+     * @return
+     */
+    @RequestMapping("/getModulesJson")
+    @ResponseBody
+    public String getModulesJson(@RequestParam("id") int id, @RequestParam("siteId") int siteId) {
+        this.map = new HashMap<>();
+        try {
+            List<Dict> dictByType = dictService.getDictByType(DictTypeEnum.DICT_TYPE_ENUM_CHILDCATEGORY.getCode());
+            SiteArticle siteArticle = siteService.selectDetail(siteId, id);
+            map.put("success", true);
+            map.put("list", dictByType);
+            map.put("siteArticle", siteArticle);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("message", "查询模块异常");
+        }
+        return JSON.toJSONString(map);
+    }
+
+    /**
+     * 在网站专栏模块添加文章
+     *
+     * @param request
+     * @param siteQuery
+     * @return
+     */
+    @RequestMapping(value = "/editArticle", method = RequestMethod.POST)
+    @ResponseBody
+    public EduResult editArticle(HttpServletRequest request,
+                                 @RequestBody SiteQuery siteQuery
+    ) {
+        EduResult eduResult = new EduResult();
+        User ut = (User) request.getSession().getAttribute(BureauConstants.USER_TOKEN);
+        if (ut == null) {
+            eduResult.put("success", false);
+            eduResult.put("msg", "您无权查看！");
+            return eduResult;
+        }
+        siteQuery.setUserName(ut.getUserName());
+        siteQuery.setUserId(ut.getId());
+        try {
+            siteService.editArticle(siteQuery);
+            log.info("修改文章成功");
+        } catch (Exception e) {
+            log.error("修改文章失败，请联系管理员");
+            return EduResult.error("修改文章失败，请联系管理员");
+        }
+        return EduResult.ok();
+    }
+
+    /**
+     * 修改文章状态为已删除
+     *
+     * @return
+     */
+    @RequestMapping("/delArticle")
+    @ResponseBody
+    public EduResult delArticle(@RequestParam("id") int id,
+                                @RequestParam("siteId") int siteId) {
+        EduResult eduResult = new EduResult();
+        Article article = indexService.getArticleById(id);
+        if (article == null) {
+            eduResult.put("success", false);
+            eduResult.put("message", "数据对象不存在！");
+            return eduResult;
+        }
+        User ut = (User) request.getSession().getAttribute(BureauConstants.USER_TOKEN);
+        if (ut == null) {
+            eduResult.put("success", false);
+            eduResult.put("message", "您无权查看！");
+            return eduResult;
+        }
+        article.setIs_deleted("Y");
+        siteService.delArticle(id, siteId);
+        eduResult.put("success", true);
+        eduResult.put("message", "删除成功");
+        return eduResult;
+    }
+
+    /**
+     * 网站专栏对应的文章列表跳转
+     *
+     * @param siteId
+     * @return
+     */
+    @RequestMapping("/articleManage")
+    public String articleManage(@RequestParam("id") int siteId) {
+        request.getSession().setAttribute("siteId", siteId);
+        List<Dict> dictByType = dictService.getDictByType(DictTypeEnum.DICT_TYPE_ENUM_CHILDCATEGORY.getCode());
+        request.getSession().setAttribute("list", dictByType);
+        return "manager/site_article";
+    }
+
+
+    /**
+     * 查询网站专栏对应的文章列表
+     *
+     * @param site
+     * @return
+     */
+    @RequestMapping("/articleList")
+    @ResponseBody
+    public String articleList(@RequestBody SiteArticle site) {
+        Map<String, Object> map = new HashMap();
+        try {
+            List<Article> articles = siteService.articleList(site);
+            map.put("success", true);
+            map.put("list", articles);
+            map.put("obj", site.getArticle());
+        } catch (Exception e) {
+            log.error(e.getLocalizedMessage());
+            map.put("success", false);
+            map.put("message", "查询文章列表失败");
+        }
+        return JSON.toJSONStringWithDateFormat(map, "yyyy-MM-dd");
     }
 
     /**
@@ -81,7 +265,7 @@ public class SiteController extends BaseController {
      */
     @RequestMapping("/add")
     @ResponseBody
-    public String add(@RequestBody SysSite siteQuery, @RequestParam("file") MultipartFile file) {
+    public String add(@RequestBody Site siteQuery) {
         this.map = new HashMap<>();
         //记录提示信息
         String message = "";
@@ -93,16 +277,9 @@ public class SiteController extends BaseController {
                 map.put("message", message);
                 return JSON.toJSONString(map);
             }
-            //从文件中读取输入流 输入到指定目录中
-            String fileName = System.currentTimeMillis() + file.getOriginalFilename();
-            String url = savePath + File.separator + fileName;
-            //生成图片
-            outPutToDestFile(file, savePath, fileName, "2");
-            //生成缩略图 路径
-            String thumURL = thumbnailService.thumbnail(file, savePath);
-            siteQuery.setUrl(url);
-            siteQuery.setThumbUrl(thumURL);
-            siteService.add(siteQuery, ut.getId());
+            siteQuery.setCreateBy(ut.getId());
+            siteQuery.setCreateTime(new Date());
+            siteService.add(siteQuery);
             map.put("success", true);
         } catch (Exception e) {
             log.error("网站专栏添加异常：" + e.getLocalizedMessage());
@@ -112,53 +289,15 @@ public class SiteController extends BaseController {
         return JSON.toJSONString(map);
     }
 
-    /**
-     * @param file        需要上传的文件对象
-     * @param savePathStr 保存路径地址
-     * @param fileName    文件名称
-     */
-    private String outPutToDestFile(MultipartFile file, String savePathStr, String fileName, String flag) {
-        try {
-            InputStream fis = file.getInputStream();
-//             fileName =  "1".equalsIgnoreCase(flag) ? mkFileName(fileName):fileName ;
-            //得到文件保存的名称
-            FileOutputStream fos = new FileOutputStream(savePathStr + File.separator + fileName);
-            //获取读通道
-            FileChannel readChannel = ((FileInputStream) fis).getChannel();
-            //获取读通道
-            FileChannel writeChannel = fos.getChannel();
-            //创建一个缓冲区
-            ByteBuffer buffer = ByteBuffer.allocate(1024);
-            //判断输入流中的数据是否已经读完的标识
-            int length = 0;
-            //循环将输入流读入到缓冲区当中，(len=in.read(buffer))>0就表示in里面还有数据
-            while (true) {
-                buffer.clear();
-                int len = readChannel.read(buffer);//读入数据
-                if (len < 0) {
-                    break;//读取完毕
-                }
-                buffer.flip();
-                writeChannel.write(buffer);//写入数据
-            }
-            //关闭输入流
-            fis.close();
-            //关闭输出流
-            fos.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return fileName;
-    }
 
     /**
-     * 添加网站专栏设置
+     * 更新网站专栏设置跳转
      *
      * @return
      */
     @RequestMapping("/updateForward")
     public String updateForward(@RequestParam("id") int id) {
-        SysSite detail = siteService.detail(id);
+        Site detail = siteService.detail(id);
         request.getSession().setAttribute("site", detail);
         return "manager/site_edit";
     }
@@ -170,7 +309,7 @@ public class SiteController extends BaseController {
      */
     @RequestMapping("/update")
     @ResponseBody
-    public String update(@RequestBody SysSite site) {
+    public String update(@RequestBody Site site) {
         this.map = new HashMap<>();
         User ut = (User) request.getSession().getAttribute(BureauConstants.USER_TOKEN);
         if (ut == null) {

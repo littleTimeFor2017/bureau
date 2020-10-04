@@ -66,4 +66,7 @@ public interface IArticleDAO {
      * @return
      */
     int deleteArticlePhy(Integer id);
+
+
+    int deleteByBatch(List<Article> list);
 }

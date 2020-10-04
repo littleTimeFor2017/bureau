@@ -45,12 +45,8 @@ public final class ConfigManager {
 	private ConfigManager ( String rootPath, String contextPath, String uri, HttpServletRequest request ) throws FileNotFoundException, IOException {
 		this.request = request;
 		this.session = this.request.getSession();
-//		this.userToken = ConfigUtil.getUserToken(session);
-//		this.absPath = ConfigUtil.getUploadUEditorPath(this.site_id, "U");
-//		this.relPath = ConfigUtil.getUploadUEditorPath(this.site_id, "A");
 		this.host = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort();
-		//this.originalPath = this.absPath;
-		
+
 		rootPath = rootPath.replace( "\\", "/" );
 		
 		this.rootPath = rootPath;
@@ -173,7 +169,8 @@ public final class ConfigManager {
 		
 		this.parentPath = file.getParent();
 		
-		String configContent = this.readFile( this.getConfigPath() );
+//		String configContent = this.readFile( this.getConfigPath() );
+        String configContent = this.getConfigPath();
 //		String configContent = this.convertJson();
 
 		

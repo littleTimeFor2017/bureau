@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lixc.bureau.dao.DictMapper">
+    <resultMap id="BaseResultMap" type="com.lixc.bureau.entity.Dict">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="dict_key" jdbcType="VARCHAR" property="dictKey"/>
+        <result column="dict_value" jdbcType="VARCHAR" property="dictValue"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, dict_key, dict_value, type
+    </sql>
+    <select id="getDictByType" resultMap="BaseResultMap">
+        select * from sys_dict
+        <where>
+            <if test="type != null">
+                and type = #{type}
+            </if>
+        </where>
+        order by id desc
+    </select>
+</mapper>

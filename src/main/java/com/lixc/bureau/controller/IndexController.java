@@ -3,6 +3,7 @@ package com.lixc.bureau.controller;
 import com.alibaba.fastjson.JSON;
 import com.lixc.bureau.constants.BureauConstants;
 import com.lixc.bureau.entity.*;
+import com.lixc.bureau.enums.DictTypeEnum;
 import com.lixc.bureau.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +23,8 @@ public class IndexController extends BaseController {
 
     @Autowired
     private IIndexService service;
-
+    @Autowired
+    private DictService dictService;
     @Autowired
     private IDepartmentService departmentService;
 
@@ -34,6 +36,10 @@ public class IndexController extends BaseController {
 
     @Autowired
     private IManagerService managerService;
+
+
+    @Autowired
+    private ISiteService siteService;
 
     /**
      * 按照分组查询首页跳转
@@ -58,45 +64,45 @@ public class IndexController extends BaseController {
         request.setAttribute("dueList", dueList);
         List<Article> careList = service.getCareList("7", 10);
         request.setAttribute("careList", careList);
-        List<ImageEntity> imageList = service.getImageList();
-        request.setAttribute("imageList", imageList);
-        /**
-         * TODO 增加网站专栏模块list
-         */
-
+        List<ImageEntity> sylbtList = service.getImageList(1);
+        List<ImageEntity> wzzlList = service.getImageList(2);
+        List<ImageEntity> pcList = service.getImageList(3);
+        request.setAttribute("sylbtList", sylbtList);
+        request.setAttribute("wzzlList", wzzlList);
+        request.setAttribute("pcList", pcList);
         return "index";
     }
 
     /**
-     * 除了index以外的导航栏 参数传递
+     * 除了index以外的导航栏 参数传递l
+     *
      * @param type
      * @return
      */
     @RequestMapping("/other")
-    public String other(@RequestParam("type")String type){
-        //根据type查出对应的文章列表
-//        List<Article> list = service.getAListByC_type(type);
+    public String other(@RequestParam("type") String type) {
         //根据type查出对应的category
         CategoryEntity categoryEntity = managerService.getCategoryEntityByType(type);
-        request.setAttribute("entity",categoryEntity);
+        request.setAttribute("entity", categoryEntity);
         return "advice";
     }
+
     @RequestMapping("/getArticleListByTypeJSon/{type}")
     @ResponseBody
-    public String getArticleListByTypeJSon(@PathVariable("type")int c_id,
-                                           @RequestBody Article article){
-        map = new HashMap<String,Object>();
-        try{
+    public String getArticleListByTypeJSon(@PathVariable("type") int c_id,
+                                           @RequestBody Article article) {
+        map = new HashMap<String, Object>();
+        try {
             //分页、
             List<Article> list = service.getAllArticles(article, c_id);
             map.put("list", list);
             map.put("success", true);
             map.put("obj", article);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             map.put("success", true);
         }
-        return JSON.toJSONStringWithDateFormat(map,"yyyy-MM-dd");
+        return JSON.toJSONStringWithDateFormat(map, "yyyy-MM-dd");
     }
 
 
@@ -105,13 +111,15 @@ public class IndexController extends BaseController {
      */
     @RequestMapping("/articleDetail")
     public String articleDetail(@RequestParam("id") String idStr,
-                                @RequestParam(value = "type",required = false) String type) {
+                                @RequestParam(value = "type", required = false) String type,
+                                @RequestParam(value = "fromSite", required = false) boolean fromSite,
+                                @RequestParam(value = "siteId", required = false) int siteId) {
 //    public String articleDetail() {
         int id = StringUtils.isEmpty(idStr) ? 0 : Integer.parseInt(idStr);
         Article article = service.getArticleById(id);
         Annex annexById = new Annex();
-        if(!StringUtils.isEmpty(article)){
-             annexById = service.getAnnexById(article.getA_id());
+        if (!StringUtils.isEmpty(article)) {
+            annexById = service.getAnnexById(article.getA_id());
         }
         article.setAnnex(annexById);
         request.setAttribute("entity", article);
@@ -123,6 +131,8 @@ public class IndexController extends BaseController {
         }
         request.setAttribute("is_super", is_super);
         request.setAttribute("type", type);
+        request.setAttribute("fromSite", fromSite);
+        request.setAttribute("siteId", siteId);
         return "article-detail";
     }
 
@@ -164,12 +174,12 @@ public class IndexController extends BaseController {
 
     @RequestMapping("/signLogin")
     @ResponseBody
-    public  Map<String,Object> signLogin(@RequestParam("userName") String userName,
-                            @RequestParam("password") String password) {
-        Map<String,Object> map = new HashMap<>();
+    public Map<String, Object> signLogin(@RequestParam("userName") String userName,
+                                         @RequestParam("password") String password) {
+        Map<String, Object> map = new HashMap<>();
         Object attribute = request.getSession().getAttribute(BureauConstants.USER_TOKEN);
-        if(attribute != null){
-            map.put("success",true);
+        if (attribute != null) {
+            map.put("success", true);
             return map;
         }
 
@@ -182,11 +192,11 @@ public class IndexController extends BaseController {
         if (user != null && user.getPassword().equals(password)) {
             //如果用户不为空  存session 否则跳转到注册页面或者去首页（非登录状态）
             request.getSession().setAttribute(BureauConstants.USER_TOKEN, user);
-            map.put("success",true);
+            map.put("success", true);
             return map;
         }
-        map.put("success",false);
-        map.put("message","用户名或者密码错误，请重试");
+        map.put("success", false);
+        map.put("message", "用户名或者密码错误，请重试");
         return map;
     }
 
@@ -293,6 +303,34 @@ public class IndexController extends BaseController {
     @RequestMapping("/test")
     public String test() {
         return "redirect:index";
+    }
+
+    /**
+     * 根据首页图片id跳转到该图片对应的网站专栏的详情
+     *
+     * @param imageId 图片的id
+     * @return
+     */
+    @RequestMapping("/siteDetailForward")
+    public String siteDetailForward(@RequestParam("id") int imageId) {
+        //根据图片id获取到对应的站点id
+        int siteId = siteService.selectSiteIdByImageId(imageId);
+        /**
+         *  网站专栏站点中需要的数据
+         *  1.左侧菜单栏中的模块显示，根据模块的id 查询 对应的文章列表，点击文章列表进入文章详情
+         */
+        List<Dict> dictByType = dictService.getDictByType(DictTypeEnum.DICT_TYPE_ENUM_CHILDCATEGORY.getCode());
+        request.getSession().setAttribute("list", dictByType);
+        request.getSession().setAttribute("siteId", siteId);
+        return "site_detail";
+    }
+
+    @RequestMapping("/siteDetailForwardBySiteId")
+    public String siteDetailForwardBySiteId(@RequestParam("id") int siteId) {
+        List<Dict> dictByType = dictService.getDictByType(DictTypeEnum.DICT_TYPE_ENUM_CHILDCATEGORY.getCode());
+        request.getSession().setAttribute("list", dictByType);
+        request.getSession().setAttribute("siteId", siteId);
+        return "site_detail";
     }
 
 }

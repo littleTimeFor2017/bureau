@@ -47,7 +47,7 @@
                             </ul>
                         </div>
                         <ul class="oUlplay">
-                            <c:forEach var="obj" items="${imageList}">
+                            <c:forEach var="obj" items="${sylbtList}">
                                 <li>
                                     <a href="" target="_blank" class="thumbnail">
                                         <img src="/bureau/images/${obj.name}" style="width: 500px; height: 328px;">
@@ -55,14 +55,14 @@
                                 </li>
                             </c:forEach>
                             <%--<li><a href="" target="_blank">--%>
-                                <%--<img src="<%=path%>/img/img_change/ic10.jpg" style="width: 500px; height: 328px;">--%>
-                                <%--&lt;%&ndash;<p>&lt;%&ndash;此处文字后续补上&ndash;%&gt;</p>&ndash;%&gt;</a></li>--%>
+                            <%--<img src="<%=path%>/img/img_change/ic10.jpg" style="width: 500px; height: 328px;">--%>
+                            <%--&lt;%&ndash;<p>&lt;%&ndash;此处文字后续补上&ndash;%&gt;</p>&ndash;%&gt;</a></li>--%>
                             <%--<li><a href="" target="_blank">--%>
-                                <%--<img src="<%=path%>/img/img_change/ic9.jpg" style="width: 500px; height: 328px">--%>
-                                <%--&lt;%&ndash;<p></p>&ndash;%&gt;</a></li>--%>
+                            <%--<img src="<%=path%>/img/img_change/ic9.jpg" style="width: 500px; height: 328px">--%>
+                            <%--&lt;%&ndash;<p></p>&ndash;%&gt;</a></li>--%>
                             <%--<li><a href="" target="_blank">--%>
-                                <%--<img src="<%=path%>/img/img_change/ic11.jpg" style="width: 500px;height: 328px">--%>
-                                <%--&lt;%&ndash;<p></p>&ndash;%&gt;</a></li>--%>
+                            <%--<img src="<%=path%>/img/img_change/ic11.jpg" style="width: 500px;height: 328px">--%>
+                            <%--&lt;%&ndash;<p></p>&ndash;%&gt;</a></li>--%>
                         </ul>
                     </div>
                 </div>
@@ -86,23 +86,17 @@
                     </ul>
                 </div>
             </div>
-            <%--第二行 交警风采--%>
+            <%--第二行 网站专栏--%>
             <div class="news_box1" style="width: 100%;">
                 <div class="dq_picture">
                     <div class="dq_picture_box">
                         <div class="yc_studio_slider">
                             <div id="slider">
                                 <ul>
-                                    <li><img src="<%=path%>/img/img_change/1.jpg" alt="" width="212" height="159"/><a
-                                            target="_blank" href="" class="img_mark nodis">交警风采</a></li>
-                                    <li><img src="<%=path%>/img/img_change/2.jpg" alt="" width="212" height="159"/><a
-                                            target="_blank" href="" class="img_mark nodis">交警风采</a></li>
-                                    <li><img src="<%=path%>/img/img_change/3.jpg" alt="" width="212" height="159"/><a
-                                            target="_blank" href="" class="img_mark nodis">交警风采</a></li>
-                                    <li><img src="<%=path%>/img/img_change/4.jpg" alt="" width="212" height="159"/><a
-                                            target="_blank" href="" class="img_mark nodis">交警风采</a></li>
-                                    <li><img src="<%=path%>/img/img_change/5.jpg" alt="" width="212" height="159"/><a
-                                            target="_blank" href="" class="img_mark nodis">交警风采</a></li>
+                                    <c:forEach items="${wzzlList}" var="obj">
+                                        <li><img src="/bureau/images/${obj.name}" alt="" width="212" height="159"/><a
+                                                target="_blank" onclick="siteDetail(${obj.id})" class="img_mark nodis">网站专栏</a></li>
+                                    </c:forEach>
                                 </ul>
                             </div>
                         </div>
@@ -147,7 +141,7 @@
                             <c:forEach var="obj" items="${tztbList}">
                                 <li>
                                     <a href="<%=path%>/articleDetail?id=${obj.id}&type=S">
-                                        <img  src="<%=path%>/img/index/news_list_ico.png">
+                                        <img src="<%=path%>/img/index/news_list_ico.png">
                                         <div>${obj.title}</div>
                                     </a>
                                     <span>${obj.createTimeStr}</span>
@@ -167,7 +161,8 @@
                             <c:forEach var="obj" items="${zxtbList}">
                                 <li>
                                     <a href="<%=path%>/articleDetail?id=${obj.id}"><img
-                                            src="<%=path%>/img/index/news_list_ico.png"> <div>${obj.title}</div>
+                                            src="<%=path%>/img/index/news_list_ico.png">
+                                        <div>${obj.title}</div>
                                     </a><span>${obj.createTimeStr}</span>
                                 </li>
                             </c:forEach>
@@ -210,7 +205,8 @@
                             <c:forEach var="obj" items="${zgdjList}">
                                 <li>
                                     <a href="<%=path%>/articleDetail?id=${obj.id}"><img
-                                            src="<%=path%>/img/index/news_list_ico.png"> <div class="ellipsis">${obj.title}</div>
+                                            src="<%=path%>/img/index/news_list_ico.png">
+                                        <div class="ellipsis">${obj.title}</div>
                                     </a><span>${obj.createTimeStr}</span>
                                 </li>
                             </c:forEach>
@@ -228,7 +224,8 @@
                             <c:forEach var="obj" items="${mtyqList}">
                                 <li>
                                     <a href="<%=path%>/articleDetail?id=${obj.id}"><img
-                                            src="<%=path%>/img/index/news_list_ico.png"> <div class="ellipsis">${obj.title}</div>
+                                            src="<%=path%>/img/index/news_list_ico.png">
+                                        <div class="ellipsis">${obj.title}</div>
                                     </a><span>${obj.createTimeStr}</span>
                                 </li>
                             </c:forEach>
@@ -270,7 +267,8 @@
                             <c:forEach var="obj" items="${zxzzList}">
                                 <li>
                                     <a href="<%=path%>/articleDetail?id=${obj.id}"><img
-                                            src="<%=path%>/img/index/news_list_ico.png"> <div class="ellipsis">${obj.title}</div>
+                                            src="<%=path%>/img/index/news_list_ico.png">
+                                        <div class="ellipsis">${obj.title}</div>
                                     </a><span>${obj.createTimeStr}</span>
                                 </li>
                             </c:forEach>
@@ -288,7 +286,8 @@
                             <c:forEach var="obj" items="${bmgzList}">
                                 <li>
                                     <a href="<%=path%>/articleDetail?id=${obj.id}"><img
-                                            src="<%=path%>/img/index/news_list_ico.png"> <div class="ellipsis">${obj.title}</div>
+                                            src="<%=path%>/img/index/news_list_ico.png">
+                                        <div class="ellipsis">${obj.title}</div>
                                     </a><span>${obj.createTimeStr}</span>
                                 </li>
                             </c:forEach>
@@ -361,6 +360,10 @@
 <script type="text/javascript">
     function getMore(type) {
         window.location.href = "/bureau/other?type=" + type;
+    }
+
+    function siteDetail(imageId) {
+        window.location.href = "/bureau/siteDetailForward?id=" + imageId;
     }
 
 </script>

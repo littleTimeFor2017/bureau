@@ -3,6 +3,12 @@
 
 <mapper namespace="com.lixc.bureau.dao.IArticleDAO">
 
+    <resultMap id="categoryMap" type="com.lixc.bureau.entity.CategoryEntity">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="parent_id" property="parentId" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="VARCHAR"/>
+    </resultMap>
 
     <select id="getCategoryEntityById" resultType="com.lixc.bureau.entity.CategoryEntity">
         SELECT *
@@ -60,7 +66,7 @@
         WHERE `id` = #{id}
     </select>
 
-    <select id="getAllCategorise" resultType="com.lixc.bureau.entity.CategoryEntity">
+    <select id="getAllCategorise" resultMap="categoryMap">
         SELECT *
         from sys_category
         order by id asc
@@ -75,7 +81,9 @@
         <if test="createBy != null and createBy != ''">
             and createBy like CONCAT('%', #{createBy}, '%')
         </if>
-        and is_deleted= 'N' order by createTime desc
+        and is_deleted= 'N'
+        and is_site = 'N'
+        order by createTime desc
         limit #{start}, #{end}
     </select>
 
@@ -88,7 +96,9 @@
         <if test="createBy != null and createBy != ''">
             and createBy like CONCAT('%', #{createBy}, '%')
         </if>
-        and is_deleted= 'N' order by createTime desc
+        and is_deleted= 'N'
+        and is_site = 'N'
+        order by createTime desc
     </select>
 
     <insert id="addArticle" useGeneratedKeys="true" keyProperty="id">
@@ -97,13 +107,15 @@
                                  content,
                                  createTime,
                                  createBy,
-                                 a_id)
+                                 a_id,
+                                 is_site)
         VALUES (#{c_id},
                 #{title},
                 #{content},
                 NOW(),
                 #{createBy},
-                #{a_id})
+                #{a_id},
+                #{is_site})
     </insert>
 
     <update id="editArticle">
@@ -141,13 +153,17 @@
         order_no,
         use_position
         from sys_image
-        where 1= 1
-        <if test="name != null and name != ''">
-            and `name` like concat('%',#{name},'%')
-        </if>
-        <if test="createBy != null and createBy != ''">
-            and createBy like concat('%',#{createBy},'%')
-        </if>
+        <where>
+            <if test="use_position > 0">
+                and use_position = #{use_position}
+            </if>
+            <if test="name != null and name != ''">
+                and `name` like concat('%',#{name},'%')
+            </if>
+            <if test="createBy != null and createBy != ''">
+                and createBy like concat('%',#{createBy},'%')
+            </if>
+        </where>
     </select>
 
     <select id="selectImageCount" resultType="integer">
@@ -171,6 +187,12 @@
         from sys_article
         where id = #{id}
     </delete>
+    <delete id="deleteByBatch">
+        delete from sys_article where id in
+        <foreach collection="list" open="(" item="article" close=")" separator=",">
+            #{article.id}
+        </foreach>
+    </delete>
 
     <select id="selectImageByID" parameterType="integer" resultType="com.lixc.bureau.entity.ImageEntity">
         select *
@@ -178,9 +200,10 @@
         where id = #{id}
     </select>
 
-    <insert id="addImage" parameterType="com.lixc.bureau.entity.ImageEntity" useGeneratedKeys="true" keyColumn="id">
-        insert into sys_image(`name`, url, thumURL, create_date, createBy)
-        values (#{name}, #{url}, #{thumURL}, #{create_date}, #{createBy})
+    <insert id="addImage" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
+            parameterType="com.lixc.bureau.entity.ImageEntity">
+        insert into sys_image(`name`, url, thumURL, create_date, createBy, use_position)
+        values (#{name}, #{url}, #{thumURL}, #{create_date}, #{createBy}, #{use_position})
     </insert>
 
 </mapper>

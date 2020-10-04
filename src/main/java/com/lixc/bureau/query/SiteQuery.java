@@ -13,12 +13,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class SiteQuery {
     private Integer id;
     private Integer userId;
+    private String userName;
     private String title;
     private String content;
     private String isShow;
-    private String url;
-    private String thumbUrl;
-    private MultipartFile file;
-
-
+    private Integer siteId;
+    private Integer moduleId;
+    private Integer articleId;
 }

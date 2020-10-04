@@ -38,8 +38,8 @@ public class UeditorController {
 //            PrintWriter out = response.getWriter();
 //            out.println(json);
             request.setCharacterEncoding("utf-8");
-//            String rootPath = request.getSession().getServletContext().getRealPath("/");
-            String rootPath = "D:/uefile/";
+            String rootPath = request.getSession().getServletContext().getRealPath("/");
+//            String rootPath = "G:/uefile/";
             PrintWriter out = response.getWriter();
             out.write(new ActionEnter(request, rootPath).exec());
         } catch (IOException e) {

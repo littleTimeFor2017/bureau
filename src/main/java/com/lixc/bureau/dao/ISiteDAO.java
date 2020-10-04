@@ -1,7 +1,8 @@
 package com.lixc.bureau.dao;
 
-import com.lixc.bureau.entity.SysSite;
+import com.lixc.bureau.entity.Site;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -13,18 +14,21 @@ import java.util.List;
  */
 @Mapper
 public interface ISiteDAO {
-    int insert(SysSite site);
+    int insert(Site site);
 
-    int insertSelective(SysSite site);
+    int insertSelective(Site site);
 
     int deleteById(Integer id);
 
-    int updateSelective(SysSite record);
+    int updateSelective(Site record);
 
-    List<SysSite> selectForList(SysSite sysSite);
-    int selectForListCount(SysSite sysSite);
+    List<Site> selectForList(Site site);
+    int selectForListCount(Site site);
 
-    SysSite selectOne(Integer id);
+    Site selectOne(Integer id);
+
+    List<Site> selectByImageId(Integer id);
 
 
+    int selectSiteIdByImageId(@Param("imageId")int imageId);
 }

@@ -34,16 +34,16 @@ spring:
       suffix: .jsp
   #  static-path-pattern: /**
   resources:
-    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:///D:/uefile/,file:///C:/Users/11930/Desktop/temp
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:///D:/uefile/,file:///E:/Users/11930/Desktop/temp/
 
 
-
+logging.level.org.springframework.boot.autoconfigure: info
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 bureau:
   path:
-    savePath: C:/Users/11930/Desktop/temp
-    tempPath: C:/Users/11930/Desktop/temp/temp
+    savePath: E:/Users/11930/Desktop/temp
+    tempPath: E:/Users/11930/Desktop/temp/temp
 
 

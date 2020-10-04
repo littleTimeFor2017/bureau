@@ -1,127 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lixc.bureau.dao.ISiteDAO">
-    <resultMap id="BaseResultMap" type="com.lixc.bureau.entity.SysSite">
+    <resultMap id="BaseResultMap" type="com.lixc.bureau.entity.Site">
         <result column="id" jdbcType="INTEGER" property="id"/>
-        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="image_id" jdbcType="INTEGER" property="imageId"/>
         <result column="is_show" jdbcType="CHAR" property="isShow"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="create_by" jdbcType="INTEGER" property="createBy"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="update_by" jdbcType="INTEGER" property="updateBy"/>
-        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
-        <result column="url" jdbcType="VARCHAR" property="url"/>
-        <result column="thumb_url" jdbcType="VARCHAR" property="thumbUrl"/>
     </resultMap>
-    <insert id="insert" parameterType="com.lixc.bureau.entity.SysSite">
-        insert into sys_site (id, title, is_show,
+    <insert id="insert" parameterType="com.lixc.bureau.entity.Site">
+        insert into sys_site (id, is_show,
                               create_time, create_by, update_time,
-                              update_by, url, thumb_url,
-                              content)
-        values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{isShow,jdbcType=CHAR},
-                #{createtime,jdbcType=TIMESTAMP}, #{createby,jdbcType=INTEGER}, #{updatetime,jdbcType=TIMESTAMP},
-                #{updateby,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, #{thumbUrl,jdbcType=VARCHAR},
-                #{content,jdbcType=LONGVARCHAR})
+                              update_by, image_id)
+        values (#{id,jdbcType=INTEGER}, #{isShow,jdbcType=CHAR},
+                #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP},
+                #{updateBy,jdbcType=INTEGER}, #{imageId,jdbcType=INTEGER})
     </insert>
-    <insert id="insertSelective" parameterType="com.lixc.bureau.entity.SysSite">
+    <insert id="insertSelective" parameterType="com.lixc.bureau.entity.Site">
         insert into sys_site
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
             </if>
-            <if test="title != null">
-                title,
-            </if>
             <if test="isShow != null">
                 is_show,
             </if>
-            <if test="createtime != null">
+            <if test="createTime != null">
                 create_time,
             </if>
-            <if test="createby != null">
+            <if test="createBy != null">
                 create_by,
             </if>
-            <if test="updatetime != null">
+            <if test="updateTime != null">
                 update_time,
             </if>
-            <if test="updateby != null">
+            <if test="updateBy != null">
                 update_by,
             </if>
-            <if test="url != null">
-                url,
-            </if>
-            <if test="thumbUrl != null">
-                thumb_url,
-            </if>
-            <if test="content != null">
-                content,
+            <if test="imageId > 0">
+                image_id,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 #{id,jdbcType=INTEGER},
             </if>
-            <if test="title != null">
-                #{title,jdbcType=VARCHAR},
-            </if>
             <if test="isShow != null">
                 #{isShow,jdbcType=CHAR},
             </if>
-            <if test="createtime != null">
-                #{createtime,jdbcType=TIMESTAMP},
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="createby != null">
-                #{createby,jdbcType=INTEGER},
+            <if test="createBy != null">
+                #{createBy,jdbcType=INTEGER},
             </if>
-            <if test="updatetime != null">
-                #{updatetime,jdbcType=TIMESTAMP},
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="updateby != null">
-                #{updateby,jdbcType=INTEGER},
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=INTEGER},
             </if>
-            <if test="url != null">
-                #{url,jdbcType=VARCHAR},
-            </if>
-            <if test="thumbUrl != null">
-                #{thumbUrl,jdbcType=VARCHAR},
-            </if>
-            <if test="content != null">
-                #{content,jdbcType=LONGVARCHAR},
+            <if test="imageId > 0">
+                #{imageId,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
-    <update id="updateSelective" parameterType="com.lixc.bureau.entity.SysSite">
+    <update id="updateSelective" parameterType="com.lixc.bureau.entity.Site">
         update sys_site
         <set>
             <if test="record.id != null">
                 id = #{record.id,jdbcType=INTEGER},
             </if>
-            <if test="record.title != null">
-                title = #{record.title,jdbcType=VARCHAR},
-            </if>
             <if test="record.isShow != null">
                 is_show = #{record.isShow,jdbcType=CHAR},
             </if>
-            <if test="record.createtime != null">
-                create_time = #{record.createtime,jdbcType=TIMESTAMP},
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="record.createby != null">
-                create_by = #{record.createby,jdbcType=INTEGER},
+            <if test="record.createBy != null">
+                create_by = #{record.createBy,jdbcType=INTEGER},
             </if>
-            <if test="record.updatetime != null">
-                update_time = #{record.updatetime,jdbcType=TIMESTAMP},
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="record.updateby != null">
-                update_by = #{record.updateby,jdbcType=INTEGER},
+            <if test="record.updateBy != null">
+                update_by = #{record.updateBy,jdbcType=INTEGER},
             </if>
-            <if test="record.url != null">
-                url = #{record.url,jdbcType=VARCHAR},
-            </if>
-            <if test="record.thumbUrl != null">
-                thumb_url = #{record.thumbUrl,jdbcType=VARCHAR},
-            </if>
-            <if test="record.content != null">
-                content = #{record.content,jdbcType=LONGVARCHAR},
+            <if test="record.imageId != null">
+                image_id = #{record.imageId,jdbcType=INTEGER},
             </if>
         </set>
     </update>
@@ -130,12 +98,12 @@
         from sys_site
         where id = #{id}
     </delete>
-    <select id="selectForList" resultType="com.lixc.bureau.entity.SysSite">
+    <select id="selectForList" resultMap="BaseResultMap">
         select *
         from sys_site
         limit #{start},#{end}
     </select>
-    <select id="selectOne" resultType="com.lixc.bureau.entity.SysSite">
+    <select id="selectOne" resultMap="BaseResultMap">
         select *
         from sys_site
         where id = #{id}
@@ -143,6 +111,14 @@
     <select id="selectForListCount" resultType="java.lang.Integer">
         select count(1)
         from sys_site
+    </select>
+    <select id="selectByImageId" resultType="com.lixc.bureau.entity.Site">
+        select *
+        from sys_site
+        where image_id = #{id}
+    </select>
+    <select id="selectSiteIdByImageId" resultType="java.lang.Integer">
+        select id from sys_site where image_id=#{imageId}
     </select>
 
 </mapper>

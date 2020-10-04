@@ -18,8 +18,7 @@
     <link rel="stylesheet" href="<%=path%>/common/jquery/dateRangePicker/daterangepicker.css">
     <link href="<%=path %>/common/css/details_top.css" rel="stylesheet">
     <script src="<%=path %>/common/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="<%=path %>
-        /common/bootstrap/validator/js/bootstrapValidator.min.js"></script>
+    <script type="text/javascript" src="<%=path %>/common/bootstrap/validator/js/bootstrapValidator.min.js"></script>
     <script type="text/javascript" src="<%=path %>/common/bootstrap/validator/js/language/zh_CN.js"></script>
     <script type="text/javascript" src="<%=path %>/common/bootstrap/paginator/bootstrap-paginator.min.js"></script>
     <script type="text/javascript" src="<%=path %>/common/bootstrap/paginator/b3paginator.js"></script>
@@ -41,7 +40,7 @@
 <div class="col-md-12">
     <div id="data_header" class="page-header clearfix" style="margin: 0px 0 20px">
         <h1 class="pull-left">网站专栏</h1>
-        <a href="javascript:openDialog('add',-1);" id="addButton" class="btn btn-info btn-sm pull-right">添加</a>
+        <%--<a href="javascript:openDialog('add',-1);" id="addButton" class="btn btn-info btn-sm pull-right">添加</a>--%>
     </div>
     <div class="form-inline well well-sm">
         <div class="form-group">
@@ -70,7 +69,7 @@
             <td>{{createBy}}</td>
             <td>{{createTime}}</td>
             <td>{{is_show}}</td>
-            <td>{{is_deleted}}</td>
+            <td >{{is_deleted}}</td>
         </tr>
         </tbody>
     </table>
@@ -126,12 +125,12 @@
                                 var html = content_html;
                                 var cno = $('#pageSize').val() * ($('#curPage').val() - 1);
                                 html = html.replace('{{id}}', (cno + i + 1))
-                                    .replace('{{name}}', "<img src=/bureau/images/" + e.thumURL + " />")
+                                    .replace('{{name}}', "<img src=/bureau/images/" + e.imageEntity.thumURL + " />")
                                     .replace('{{createBy}}', e.createBy)
-                                    .replace('{{createTime}}', e.create_date)
-                                    .replace('{{is_deleted}}', '<a href="javascript:openDialog(\'del\',' + e.id + ');" class="btn btn-info
-                                btn - sm
-                                ">删除</a>')
+                                    .replace('{{createTime}}', e.createTime)
+                                    .replace('{{is_show}}', e.isShow == 'Y'?"是":"否")
+                                    <%--.replace('{{is_deleted}}', '<a href="javascript:openDialog(\'del\',' + e.id + ');" class="btn btn-infobtn - sm">删除</a>  |  <a href="javascript:openDialog(\'manage\',' + e.id + ');" class="btn btn-infobtn - sm">文章管理</a>')--%>
+                                    .replace('{{is_deleted}}', '<a href="javascript:openDialog(\'manage\',' + e.id + ');" class="btn btn-infobtn - sm">文章管理</a>')
                                 content += html;
                             })
                         } else {
@@ -139,8 +138,7 @@
                         }
                         $('#table_head').html(content);
                         $('#table_head').show();
-                        // initB3paginator(data.obj)
-                        checkButton()
+                        initB3paginator(data.obj)
                     }
                 },
                 error: function (data) {
@@ -186,12 +184,17 @@
     function openDialog(type, ctId) {
         var remote_url = "";
         if (type == "add") {
-            remote_url = path + "/site/addForward?&r=" + Math.random();
+            remote_url = path + "/site/addForward?id="+ctId+"&r=" + Math.random();
             $("#dModal").modal({backdrop: 'static', keyboard: false, show: true, remote: remote_url});
         }
         if (type == "edit") {
             remote_url = path + "/site/updateForward?id=" + ctId + "&r=" + Math.random();
             $("#dModal").modal({backdrop: 'static', keyboard: false, show: true, remote: remote_url});
+        }
+        if (type == "manage") {
+       var url =  path + "/site/articleManage?id=" + ctId + "&r=" + Math.random();
+    window.open(url);
+        <%--$("#dModal").modal({backdrop: 'static', keyboard: false, show: true, remote: remote_url});--%>
         }
         if (type == "del") {
             layer.confirm("是否删除此数据？", {icon: 3, title: '温馨提示'}, function (index) {

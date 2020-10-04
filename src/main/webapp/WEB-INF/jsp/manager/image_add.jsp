@@ -22,9 +22,24 @@
                 <span><img id="photourlShow" src="" width="300" height="197" style="display: none"/></span>
             </div>
         </div>
-        <div class="form-group"></div>
+        <div class="form-group">
+            <div class="col-md-2 control-label">
+                <label>所属模块:</label>
+            </div>
+            <div class="col-md-9 controls">
+                <div class="form-check form-check-inline">
+                    <c:forEach items="${list}" var="obj">
+                        <label class="form-check-label" style="margin-left:20px;">
+                            <input type="checkbox" name="useModel" value="${obj.id}"><span>${obj.dictValue}</span>
+                        </label>
+                    </c:forEach>
+                </div>
+
+            </div>
+        </div>
         <div class="form-group">
             <div class="col-md-9" style="margin-left: 20px;margin-bottom: 5px;">上传时最好选择图片大小：500*328</div>
+            <%--<div class="alert alert-warning">上传时最好选择图片大小：500*328</div>--%>
             <div class="col-md-9" style="margin-left: 20px;margin-bottom: 5px;">首页轮播图最好不要超过三张</div>
         </div>
     </div>
@@ -77,7 +92,5 @@
             }
         });
     }
-
-
 </script>
 </body>

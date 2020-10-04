@@ -46,6 +46,16 @@
                     <%--</div>--%>
             </div>
         </div>
+        <%--如果是政工党建模块，增加文章发布的子菜单--%>
+    <div class="row form-group" <c:if test="${c_id} != 4">style="display: none"</c:if>>
+        <div class="col-md-2 control-label">
+        <label>选择模块</label>
+        </div>
+        <div class="col-md-9 controls" id="moudle_content">
+        </div>
+    </div>
+
+
         <div class="row form-group" <c:if test="${c_id !=2}">style="display: none"</c:if>>
             <div class="col-md-2 control-label">
                 <label>选择部门</label>
@@ -166,6 +176,7 @@
     }
 
     function addArticle(ids) {
+        //ids为部门id的集合
         var article = {};
         article.title = $("#Atitle").val();
         article.content = $("#description").val();
@@ -194,8 +205,7 @@
             }
         })
     }
-
-
+        //加载部门数据
     function loadDepData() {
         $.ajax({
             url: path + '/dep/getAllDeps',
@@ -239,6 +249,9 @@
 
     }
 
+        //加载模块数据
+        function loadModuleData(){
+        }
 
     function checkDepAll() {
         $("  input[name=ck_R]").each(function (i, e) {

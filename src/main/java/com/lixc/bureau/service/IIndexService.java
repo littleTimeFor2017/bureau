@@ -36,7 +36,7 @@ public interface IIndexService {
      */
     List<Article> getAllArticles(Article article, int c_id);
 
-    List<ImageEntity> getImageList();
+    List<ImageEntity> getImageList(int use_position);
 
 
 

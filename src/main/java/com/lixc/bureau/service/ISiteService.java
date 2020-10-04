@@ -1,8 +1,10 @@
 package com.lixc.bureau.service;
 
-import com.lixc.bureau.back.SiteBack;
-import com.lixc.bureau.entity.SysSite;
+import com.lixc.bureau.entity.Article;
+import com.lixc.bureau.entity.Site;
+import com.lixc.bureau.entity.SiteArticle;
 import com.lixc.bureau.query.SiteQuery;
+import com.lixc.bureau.util.EduResult;
 
 import java.util.List;
 
@@ -18,18 +20,18 @@ public interface ISiteService {
      *
      * @return
      */
-    List<SysSite> list(SysSite site);
+    List<Site> list(Site site);
 
     /**
      * 添加网站专栏设置
      *
      * @return
      */
-    int add(SysSite site, Integer userId);
+    int add(Site site);
 
     /**
      * 删除网站专栏设置*
-
+     *
      * @return
      */
     int delete(Integer id);
@@ -39,7 +41,7 @@ public interface ISiteService {
      *
      * @return
      */
-    int update(SysSite site, Integer userId);
+    int update(Site site, Integer userId);
 
     /**
      * 查询网站专栏详情
@@ -47,6 +49,18 @@ public interface ISiteService {
      * @param id 主键id
      * @return
      */
-    SysSite detail(Integer id);
+    Site detail(Integer id);
 
+    int addArticle(SiteQuery siteQuery);
+
+
+    List<Article> articleList(SiteArticle site);
+
+    SiteArticle selectDetail(Integer siteId, Integer articleId);
+
+    void editArticle(SiteQuery siteQuery);
+
+    void delArticle(int id,int siteId);
+
+    int selectSiteIdByImageId(int siteId);
 }

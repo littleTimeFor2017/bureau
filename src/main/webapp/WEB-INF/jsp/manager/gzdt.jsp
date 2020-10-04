@@ -32,8 +32,7 @@
     <script type="text/javascript" charset="utf-8" src="<%=path %>/common/ueditor/ueditor.config.js"></script>
     <script type="text/javascript" charset="utf-8" src="<%=path %>/common/ueditor/ueditor.all.min.js"></script>
     <script type="text/javascript" src="<%=path %>/common/ueditor/lang/zh-cn/zh-cn.js"></script>
-    <script type="text/javascript"
-            src="<%=path %>/common/bootstrap/colorpicker/js/bootstrap-colorpicker.min.js"></script>
+    <script type="text/javascript" src="<%=path %>/common/bootstrap/colorpicker/js/bootstrap-colorpicker.min.js"></script>
 </head>
 <body class="index">
 <div class="col-md-12">

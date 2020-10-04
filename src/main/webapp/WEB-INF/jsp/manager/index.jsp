@@ -4,6 +4,8 @@
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
 <%--bootstrap--%>
+<%--<link rel="stylesheet" href="//res.layui.com/layui/dist/css/layui.css"  media="all">--%>
+<link rel="stylesheet" href="<%=path %>/common/layer/3.0.3/mobile/need/layer.css"  media="all">
 <link href="<%=path %>/common/bootstrap/3.3.4/css/bootstrap.css" rel="stylesheet">
 <link rel="stylesheet" href="<%=path %>/common/bootstrap/3.3.4/css/bootstrapSwitch.css">
 <link href="<%=path%>/common/bootstrap/colorpicker/css/bootstrap-colorpicker.min.css" rel="stylesheet">
@@ -32,7 +34,7 @@
 <script type="text/javascript" src="<%=path %>/common/bootstrap/paginator/b3paginator.js"></script>
 <script type="text/javascript" src="<%=path %>/common/js/b3alert.js"></script>
 
-<script type="text/javascript" src="<%=path %>/common/layer/3.0.3/layer.js"></script>
+
 <script type="text/javascript" src="<%=path %>/common/js/placeholder.js"></script>
 <script type="text/javascript" src="<%=path%>/common/moment/min/moment.min.js"></script>
 <script type="text/javascript" src="<%=path%>/common/js/StringUtils.js"></script>
@@ -58,6 +60,7 @@
         <div class="col-md-10" role="main" id="system_date"></div>
     </div>
 </div>
-
+<div class="container admin-container">
+</div>
 </body>
 </html>

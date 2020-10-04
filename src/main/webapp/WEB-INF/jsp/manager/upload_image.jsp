@@ -39,7 +39,7 @@
 <body class="index">
 <div class="col-md-12">
     <div id="data_header" class="page-header clearfix" style="margin: 0px 0 20px">
-        <h1 class="pull-left">首页轮播图</h1>
+        <h1 class="pull-left">图片管理</h1>
         <a href="javascript:openDialog('add',-1);" id="addButton" class="btn btn-info btn-sm pull-right">添加</a>
     </div>
     <div class="form-inline well well-sm">
@@ -129,14 +129,15 @@
                         var content = '<tr>';
 
                         if (list && list.length > 0) {
-                            uploadImgNums = list.length;
                             $(list).each(function (i, e) {
                                 var html = content_html;
+                                var usePostion = null;
+                                if(e.use_position == 1){usePostion = "首页轮播图"}else if(e.use_position == 2){usePostion="网站专栏"}else if(e.use_position == 3){usePostion="首页飘窗"}
                                 var cno = $('#pageSize').val() * ($('#curPage').val() - 1);
                                 html = html.replace('{{id}}', (cno + i + 1))
-                                    .replace('{{name}}', "<img  src=" + e.thumURL + " />")
+                                    .replace('{{name}}', "<img  src='/bureau/"+ e.thumURL + "'/>")
                                     .replace('{{createBy}}', e.createBy)
-                                    .replace('{{usePosition}}', e.use_position)
+                                    .replace('{{usePosition}}', usePostion)
                                     .replace('{{createTime}}', e.create_date)
                                     .replace('{{is_deleted}}', '<a href="javascript:openDialog(\'del\',' + e.id + ');" class="btn btn-info btn-sm">删除</a>')
                                 content += html;

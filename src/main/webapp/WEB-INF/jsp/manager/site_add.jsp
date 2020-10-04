@@ -6,11 +6,6 @@
 %>
 <body>
 <title>添加专栏</title>
-<link rel="stylesheet" href="../../css/css/style.css"/>
-<link rel="stylesheet" href="../../css/css/bootstrap.css"/>
-<link rel="stylesheet" href="../../css/webuploader/bootstrap-theme.min.css">
-<link rel="stylesheet" type="text/css" href="../../css/webuploader/demo.css">
-<link rel="stylesheet" type="text/css" href="../../css/webuploader/webuploader.css">
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     <h4 class="modal-title">添加</h4>
@@ -18,25 +13,6 @@
 <form id="paper-add-form" action="<%=basePath %>manager/addArticle" method="post" class="form-horizontal"
       enctype="multipart/form-data">
     <div class="modal-body">
-        <div class="page-container">
-            <div id="uploader" class="wu-example">
-                <div class="queueList">
-                    <div id="dndArea" class="placeholder">
-                        <div id="filePicker"></div>
-                        <p>或将照片拖到这里</p>
-                    </div>
-                </div>
-                <div class="statusBar" style="display:none">
-                    <div class="progress">
-                        <span class="text">0%</span>
-                        <span class="percentage"></span>
-                    </div>
-                    <div class="btns">
-                        <div class="uploadBtn">开始上传</div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <%--titile--%>
         <div class="row form-group">
             <div class="col-md-2 control-label">
@@ -51,19 +27,39 @@
                 <label>内容</label>
             </div>
             <div class="col-md-9 controls">
-                <input type="hidden" id="c_id" name="c_id" value="${c_id}">
+                <input type="hidden" id="c_id" name="c_id" value="${id}">
                 <input type="hidden" id="description" name="article.content" value="">
                 <input type="hidden" id="paperrich" name="article.content.richtext" value=''>
                 <div id="ue_content"></div>
             </div>
         </div>
-        <div class="row form-group" <c:if test="${c_id ==10}">style="display: none"</c:if>>
+        <div class="row form-group">
             <div class="col-md-2 control-label">
-                <label>展示图片</label>
+                <label>是否展示</label>
             </div>
             <div class="col-md-9 controls">
-                <input type="file" name="annex" id="annex" class="form-control">
-                <input type="hidden" name="a_id" id="a_id">
+                <div class="radio-inline">
+                    <label style="margin-left:20px;"> <input type="radio" name="unit" value="Y" checked="checked"/>是
+                    </label>
+                    <label style="margin-left:20px;"> <input type="radio" name="unit" value="N"/>否 </label>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-2 control-label">
+                <label>所属模块</label>
+            </div>
+            <div class="col-md-9 controls">
+                <div class="radio-inline">
+                    <c:forEach items="${list}" var="obj" varStatus="status">
+                        <c:if test="${status.index == 0}">
+                            <label style="margin-left:20px;"> <input type="radio" name="module" checked="checked"  value="${obj.id}"/>${obj.dictValue} </label>
+                        </c:if>
+                        <c:if test="${status.index != 0}">
+                            <label style="margin-left:20px;"> <input type="radio" name="module"  value="${obj.id}"/>${obj.dictValue} </label>
+                        </c:if>
+                    </c:forEach>
+                </div>
             </div>
         </div>
     </div>
@@ -73,19 +69,13 @@
     </div>
 </form>
 <script type="text/javascript">
-    var c_id = $("#c_id").val();
+    var path = '<%=path%>'
     $(document).ready(function () {
         //实例化编辑器
         var random = Math.random();
         var ue_id = "myEditor" + random;
         $("#ue_content").html("<script type=\"text/plain\" id=" + ue_id + " style=\"width:100%;\"> <\/script>")
         var ue = UE.getEditor(ue_id, {
-            //这里可以选择自己需要的工具按钮名称,此处仅选择如下五个
-            // toolbars: [['Bold', 'italic', 'underline', '|',
-            // 'paragraph', 'fontfamily', 'fontsize', '|', 'forecolor',
-            // 'backcolor', 'justifyleft', 'justifycenter',
-            // 'justifyright', 'justifyjustify', '|',
-            // 'emotion', 'insertimage']],
             toolbars: [['undo', 'redo', '|',
                 'Bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat',
                 'formatmatch', '|',
@@ -113,9 +103,7 @@
             var description = ue.getContent();
             $("#description").val(description);
             e.preventDefault();
-            var ids = getids('depListDiv');
             var $form = $(e.target);
-            var keys = gbForm.getCheckboxValue("ck_R");
             if ($("#Atitle").val() == null || $("#Atitle").val() == '') {
                 layer.msg("请输入标题", {icon: 2});
                 $("#add-paper-btn").button('reset');
@@ -124,78 +112,51 @@
                 layer.msg("请输入内容", {icon: 2});
                 $("#add-paper-btn").button('reset');
                 return;
-            } else {
-                if (c_id != 2) {
-                    ids = "-1";
-                }
+            } else if ($("input[type=radio]:checked").length == 0) {
+                layer.msg("请选择所属模块", {icon: 2});
+                $("#add-paper-btn").button('reset');
+                return;
             } // Get the BootstrapValidator instance
             var bv = $form.data('bootstrapValidator');
+            addArticleOnly()
         });
 
         $("#add-paper-btn").on('click', function (event) {
             //提交时验证表单
             $('#paper-add-form').bootstrapValidator('validate');
         });
-
-        loadDepData();
     })
 
-    function uploadAnnex(ids) {
-        var fd = new FormData($("#paper-add-form")[0]);
-        fd.append('file', $('#annex')[0].files[0]);
-        $.ajax({
-            url: path + '/manager/uploadFile',
-            dataType: 'json',
-            async: false,
-            data: fd,
-            type: 'POST',
-            processData: false,
-            contentType: false,
-            catch: false,
-            success: function (data) {
-                console.log(data)
-                if (data && data.success) {
-                    $("#a_id").val(data.result)
-                    addArticle(ids);
-                } else {
-                    console.log("error")
-                }
-            },
-            error: function (data) {
-                console.log(data);
-                layer.msg(data.msg, {icon: 2});
-            }
-        })
-    }
 
-    function addArticle(ids) {
-        var article = {};
-        article.title = $("#Atitle").val();
-        article.content = $("#description").val();
-        article.c_id = $("#c_id").val();
-        article.a_id = $("#a_id").val();
-        $.ajax({
-            url: $("#paper-add-form").attr("action") + '/' + ids,
-            dataType: 'json',
-            async: false,
-            data: JSON.stringify(article),
-            type: 'POST',
-            contentType: 'application/json',
-            success: function (data) {
-                console.log(data);
-                if (data.resultCode == 200) {
-                    loadData();
-                    $('#dModal').modal('hide');
-                    layer.msg("添加成功", {icon: 1});
-                } else {
+    function addArticleOnly() {
+    var moduleId = $("input[name=module ]:checked").val();
+        var siteQuery = {};
+    siteQuery.title = $("#Atitle").val();
+    siteQuery.content = $("#description").val();
+    siteQuery.siteId = $("#c_id").val();
+    siteQuery.moduleId = moduleId;
+            $.ajax({
+                url: path+"/site/addArticle",
+                dataType: 'json',
+                async: false,
+                data: JSON.stringify(siteQuery),
+                type: 'POST',
+                contentType: 'application/json',
+                success: function (data) {
+                    console.log(data);
+                    if (data.resultCode == 200) {
+                        loadData();
+                        $('#dModal').modal('hide');
+                        layer.msg("添加成功", {icon: 1});
+                    } else {
+                        layer.msg(data.msg, {icon: 2});
+                    }
+                },
+                error: function (data) {
+                    console.log(data);
                     layer.msg(data.msg, {icon: 2});
                 }
-            },
-            error: function (data) {
-                console.log(data);
-                layer.msg(data.msg, {icon: 2});
-            }
-        })
+            })
     }
 
 </script>

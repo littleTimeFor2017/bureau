@@ -57,9 +57,9 @@
         <%--var ue_content = '<script type="text/plain" id=' + ue_id--%>        <%--ue +='style="width:100%;">'--%>
         <%--ue+= ${article.content};--%>
         <%--ue+='<\/script>'--%>
-        var content="<script type=\"text/plain\"  id="+ue_id+" style=\"width:100%;\">"+content+"<\/script>"
+        var content1="<script type=\"text/plain\"  id="+ue_id+" style=\"width:100%;\">"+content+"<\/script>"
         <%--$("#ue_content_e").html('<script type="text/plain" id=' + ue_id + ' style="width:100%;">'+${article.content}+' <\/script>')--%>
-        $("#ue_content_e").html(content)
+        $("#ue_content_e").html(content1)
         var ue = UE.getEditor(ue_id, {
             //这里可以选择自己需要的工具按钮名称,此处仅选择如下五个
             toolbars: [['Bold', 'italic', 'underline', '|',

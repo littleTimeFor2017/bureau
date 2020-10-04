@@ -61,8 +61,9 @@ public class IndexServiceImpl extends PaginatorBean implements IIndexService {
     }
 
     @Override
-    public List<ImageEntity> getImageList() {
+    public List<ImageEntity> getImageList(int use_position) {
         ImageEntity imageEntity = new ImageEntity();
+        imageEntity.setUse_position(use_position);
         return dao.selectImageList(imageEntity);
     }
 

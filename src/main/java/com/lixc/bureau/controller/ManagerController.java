@@ -3,18 +3,13 @@ package com.lixc.bureau.controller;
 import com.alibaba.fastjson.JSON;
 import com.lixc.bureau.constants.BureauConstants;
 import com.lixc.bureau.entity.*;
-import com.lixc.bureau.service.IIndexService;
-import com.lixc.bureau.service.IManagerService;
-import com.lixc.bureau.service.IThumbnailService;
+import com.lixc.bureau.enums.DictTypeEnum;
+import com.lixc.bureau.service.*;
 import com.lixc.bureau.util.EduResult;
-import org.apache.tomcat.util.http.fileupload.ProgressListener;
-import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
-import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -83,11 +78,8 @@ public class ManagerController extends BaseController {
         return "manager/gzdt";
     }
 
-    //    跳转到工作动态列表页
-    @RequestMapping("/siteForward")
-    public String siteForward() {
-        return "manager/site";
-    }
+
+
 
     /**
      * 获取工作动态列表数据json
@@ -133,6 +125,7 @@ public class ManagerController extends BaseController {
             eduResult.put("msg", "您无权查看！");
             return eduResult;
         }
+        article.setIs_site("N");
         eduResult = managerService.addArticle(article, ut.getId(), ids);
         return eduResult;
 
@@ -268,7 +261,7 @@ public class ManagerController extends BaseController {
      * 编辑跳转
      */
     @RequestMapping("/editArticleForward")
-    public String editArticleForward(ModelMap modelMap, @RequestParam("id") int id) {
+    public String editArticleForward(@RequestParam("id") int id) {
         Article articleById = indexService.getArticleById(id);
         Annex annexById = indexService.getAnnexById(articleById.getA_id());
         articleById.setAnnex(annexById);
@@ -343,10 +336,21 @@ public class ManagerController extends BaseController {
         return JSON.toJSONStringWithDateFormat(map, "yyyy-MM-dd");
     }
 
+
+    @Autowired
+    private DictService dictService;
+
+    @Autowired
+    private ISiteService siteService;
+
     @RequestMapping("/addImageForward")
     public String addImageForward() {
+        //查询所有属于图片条件模块
+        List<Dict> dictByType = dictService.getDictByType(DictTypeEnum.DICT_TYPE_ENUM_IMAGE.getCode());
+        request.getSession().setAttribute("list", dictByType);
         return "manager/image_add";
     }
+
     // 添加图片
     @RequestMapping("/addImage")
     @ResponseBody
@@ -354,6 +358,8 @@ public class ManagerController extends BaseController {
         this.map = new HashMap<>();
         //记录提示信息
         String message = "";
+
+        String[] useModel = request.getParameterValues("useModel");
         try {
             User ut = (User) request.getSession().getAttribute(BureauConstants.USER_TOKEN);
             if (ut == null) {
@@ -362,15 +368,12 @@ public class ManagerController extends BaseController {
                 map.put("message", message);
                 return JSON.toJSONString(map);
             }
-            long size = file.getSize();
-            String name = file.getOriginalFilename();
             //从文件中读取输入流 输入到指定目录中
             String fileName = System.currentTimeMillis() + file.getOriginalFilename();
             //存储到文件表中，列表展示时，只展示前四个，根据时间倒叙排序
-            String savePath = request.getServletContext().getRealPath("/WEB-INF/images");
+//            String savePath = request.getServletContext().getRealPath("/WEB-INF/images");
             String url = savePath + File.separator + fileName;
             outPutToDestFile(file, savePath, fileName, "2");
-//            file.transferTo(destFile);
             String thumURL = thumbnailService.thumbnail(file, savePath);
             ImageEntity entity = new ImageEntity();
             entity.setName(fileName);
@@ -378,14 +381,25 @@ public class ManagerController extends BaseController {
             entity.setChecked("N");
             entity.setCreateBy(ut.getUserName());
             entity.setCreate_date(new Date());
+            //每个对象生成一条记录，
             entity.setThumURL(thumURL);
-
-            managerService.addImage(entity);
+            for (String id : useModel) {
+                entity.setUse_position(Integer.parseInt(id));
+                int imageId = managerService.addImage(entity);
+                if (2 == Integer.parseInt(id)) {
+                    //生成专栏设置表
+                    Site site = new Site();
+                    site.setIsShow("Y");
+                    site.setImageId(imageId);
+                    site.setCreateTime(new Date());
+                    site.setCreateBy(ut.getId());
+                    siteService.add(site);
+                }
+            }
             message = "上传成功";
             map.put("success", true);
             map.put("message", message);
             map.put("url", url);
-
         } catch (Exception e) {
             e.printStackTrace();
             message = "上传失败";
@@ -407,6 +421,7 @@ public class ManagerController extends BaseController {
 //             fileName =  "1".equalsIgnoreCase(flag) ? mkFileName(fileName):fileName ;
             //得到文件保存的名称
             FileOutputStream fos = new FileOutputStream(savePathStr + File.separator + fileName);
+//            FileOutputStream fos = new FileOutputStream(savePathStr);
             //获取读通道
             FileChannel readChannel = ((FileInputStream) fis).getChannel();
             //获取读通道

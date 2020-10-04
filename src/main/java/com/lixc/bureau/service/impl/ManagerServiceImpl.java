@@ -1,9 +1,7 @@
 package com.lixc.bureau.service.impl;
 
 import cn.hutool.core.lang.Assert;
-import com.lixc.bureau.dao.IArticleDAO;
-import com.lixc.bureau.dao.IDepDAO;
-import com.lixc.bureau.dao.IUserDao;
+import com.lixc.bureau.dao.*;
 import com.lixc.bureau.entity.*;
 import com.lixc.bureau.service.IManagerService;
 import com.lixc.bureau.util.EduResult;
@@ -13,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,6 +34,14 @@ public class ManagerServiceImpl extends PaginatorBean implements IManagerService
 
     @Autowired
     private IDepDAO depDAO;
+
+
+    @Autowired
+    private ISiteDAO siteDAO;
+
+    @Autowired
+    private SiteArticleMapper siteArticleMapper;
+
 
     @Override
     public List<CategoryEntity> getAllCategorise() {
@@ -161,14 +168,30 @@ public class ManagerServiceImpl extends PaginatorBean implements IManagerService
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int delImage(int id) {
+        ImageEntity imageEntity = dao.selectImageByID(id);
+        if (imageEntity.getUse_position() == 2) {
+            //专栏表，文章表，关联表 都删除
+            List<Site> sites = siteDAO.selectByImageId(id);
+            if(!CollectionUtils.isEmpty(sites)){
+                Site site = sites.get(0);
+                siteDAO.deleteById(site.getId());
+                SiteArticle siteArticle = new SiteArticle();
+                siteArticle.setSiteId(site.getId());
+                List<Article> articles = siteArticleMapper.selectAllArticleBySiteId(siteArticle);
+                dao.deleteByBatch(articles);
+                siteArticleMapper.deleteBySiteId(site.getId());
+            }
+        }
         return dao.deleteImage(id);
     }
 
 
     @Override
     public int addImage(ImageEntity imageEntity) {
-        return dao.addImage(imageEntity);
+        dao.addImage(imageEntity);
+        return imageEntity.getId();
     }
 
 }
