@@ -23,7 +23,12 @@
     </select>
     <select id="getArticals" resultType="com.lixc.bureau.entity.Article">
         SELECT id,title,createTime,createBy ,updateTime,updateBy from sys_article where is_deleted = 'N'
-        and c_id = #{c_id}
+        <if test="c_id != 4">
+            and c_id = #{c_id}
+        </if>
+        <if test="c_id == 4">
+            and (c_id in (select id from sys_category where parent_id = 4))
+        </if>
         order by createTime desc
         <if test="mod != null">
             limit 7
@@ -69,7 +74,7 @@
     <select id="getAllCategorise" resultMap="categoryMap">
         SELECT *
         from sys_category
-        order by id asc
+        order by id
     </select>
 
     <select id="getArticleListByCID" parameterType="com.lixc.bureau.entity.Article"
@@ -198,6 +203,13 @@
         select *
         from sys_image
         where id = #{id}
+    </select>
+    <select id="getCategoryListByType" resultMap="categoryMap">
+        SELECT *
+        from sys_category
+        where type like concat(#{type}, '%')
+        and parent_id != -1
+        order by id
     </select>
 
     <insert id="addImage" useGeneratedKeys="true" keyColumn="id" keyProperty="id"

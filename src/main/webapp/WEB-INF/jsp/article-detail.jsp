@@ -40,7 +40,7 @@
         <div class="search_wx">
         </div>
         <div style="width: auto;height: 10px;"></div>
-        <div>
+        <div style="margin-left: 40px; margin-right: 40px;">
             <% Article article = (Article) request.getAttribute("entity"); %>
             <span id="article_content"><%=article.getContent()%></span>
             <input type="hidden" name="Aid" id="Aid" value="<%=article.getId()%>"/>
@@ -48,21 +48,21 @@
             <% if (article.getAnnex() != null) { %>
             <span>附件</span>
             <div style="margin-top: 20px;margin-bottom: 20px;">
-            <span><%=article.getAnnex().getFileName()%></span>
-            <a  class="btn btn-default" href="/bureau/manager/download?id=<%=article.getAnnex().getId()%>">下载</a>
+                <span><%=article.getAnnex().getFileName()%></span>
+                <a class="btn btn-default" href="/bureau/manager/download?id=<%=article.getAnnex().getId()%>">下载</a>
             </div>
             <%}%>
             <%--<a href="javascript:downloadFile('<%=article.getAnnex().getId()%>')"><%=article.getAnnex().getFileName()%></a>--%>
             <%--<a href="file://<%=article.getAnnex().getId()%>"><%=article.getAnnex().getFileName()%></a>--%>
         </div>
-        <div>
+        <div style="margin-top: 30px;" align="center">
             <c:if test="${type=='S'}">
                 <input class="btn btn-primary well-p" type="button" name="sign" style="margin-left: 30px;"
                        onclick="myshow()" value="签收">
-            <% if ((Boolean) request.getAttribute("is_super") == true) { %>
-            <a class="btn btn-primary well-p" type="button" name="signAl" style="margin-left: 30px;"
-               onclick="sign(-1,'all')" value="全部签收">全部签收</a>
-            <% } %>
+                <% if ((Boolean) request.getAttribute("is_super") == true) { %>
+                <a class="btn btn-primary well-p" type="button" name="signAl" style="margin-left: 30px;"
+                   onclick="sign(-1,'all')" value="全部签收">全部签收</a>
+                <% } %>
             </c:if>
             <input class="btn btn-warning well-p" type="button" name="goBack" style="margin-left: 30px;"
                    onclick="goBack('index','${fromSite}','${siteId}')" value="返回"></input>
@@ -173,12 +173,12 @@
     }
 
 
-    function downloadFile(id){
+    function downloadFile(id) {
         // downloadFileDe(path+'/manager/downLoadFile','id',id)
         downloadFileAjax(id);
     }
 
-    function downloadFileDe(action,type,value){
+    function downloadFileDe(action, type, value) {
         var form = document.createElement('form');
         document.body.appendChild(form);
         form.style.display = "none";
@@ -187,26 +187,26 @@
         form.method = 'post';
 
         var newElement = document.createElement("input");
-        newElement.setAttribute("type","hidden");
+        newElement.setAttribute("type", "hidden");
         newElement.name = type;
         newElement.value = value;
         form.appendChild(newElement);
         form.submit();
     }
 
-    function downloadFileAjax(id){
+    function downloadFileAjax(id) {
         $.ajax({
-            url:path+'/manager/download',
-            data:{
-                "id":id
+            url: path + '/manager/download',
+            data: {
+                "id": id
             },
-            dataType:'json',
+            dataType: 'json',
             type: "POST",
             async: true,
-            success:function(data){
+            success: function (data) {
                 console.log(data);
             },
-            error:function(){
+            error: function () {
                 console.log("error")
             }
         })
@@ -312,14 +312,14 @@
         //$("html,body").animate({scrollTop:0},1);
     }
 
-    function goBack(type,fromSite,siteId) {
-    var url = "";
-    if(!fromSite){
-    url = path + "/index?r=" + Math.random();
-    }else{
-    url = path+"/siteDetailForwardBySiteId?id="+siteId;
-    }
-    window.location.href = url;
+    function goBack(type, fromSite, siteId) {
+        var url = "";
+        if (!fromSite) {
+            url = path + "/index?r=" + Math.random();
+        } else {
+            url = path + "/other?type=zgdj";
+        }
+        window.location.href = url;
     }
 </script>
 </body>

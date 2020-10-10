@@ -49,6 +49,11 @@ public class ManagerServiceImpl extends PaginatorBean implements IManagerService
     }
 
     @Override
+    public List<CategoryEntity> getCategoryListByType(String type) {
+        return dao.getCategoryListByType(type);
+    }
+
+    @Override
     public CategoryEntity getCategoryEntityById(int id) {
         return dao.getCategoryEntityById(id);
     }

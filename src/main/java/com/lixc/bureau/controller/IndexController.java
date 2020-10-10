@@ -54,6 +54,8 @@ public class IndexController extends BaseController {
         request.setAttribute("zxtbList", zxtbList);
         List<Article> zgdjList = service.getArticleList("7", 4);
         request.setAttribute("zgdjList", zgdjList);
+        //政工党建的集合  查询下面所有的子菜单
+
         List<Article> mtyqList = service.getArticleList("7", 5);
         request.setAttribute("mtyqList", mtyqList);
         List<Article> zxzzList = service.getArticleList("7", 6);
@@ -83,6 +85,15 @@ public class IndexController extends BaseController {
     public String other(@RequestParam("type") String type) {
         //根据type查出对应的category
         CategoryEntity categoryEntity = managerService.getCategoryEntityByType(type);
+        if(!StringUtils.isEmpty(type)){
+            //包含zgdj_的为政工党建的子分类，原来一级菜单展示的内容去掉，
+            if(type.contains("zgdj")){
+                //获取政工党建分类下面的所有的子菜单
+                List<CategoryEntity> dictByType = managerService.getCategoryListByType(type);
+                request.getSession().setAttribute("list", dictByType);
+                return "advice_zgdj";
+            }
+        }
         request.setAttribute("entity", categoryEntity);
         return "advice";
     }
@@ -113,7 +124,7 @@ public class IndexController extends BaseController {
     public String articleDetail(@RequestParam("id") String idStr,
                                 @RequestParam(value = "type", required = false) String type,
                                 @RequestParam(value = "fromSite", required = false) boolean fromSite,
-                                @RequestParam(value = "siteId", required = false) int siteId) {
+                                @RequestParam(value = "siteId", required = false) Integer siteId) {
 //    public String articleDetail() {
         int id = StringUtils.isEmpty(idStr) ? 0 : Integer.parseInt(idStr);
         Article article = service.getArticleById(id);
@@ -312,7 +323,7 @@ public class IndexController extends BaseController {
      * @return
      */
     @RequestMapping("/siteDetailForward")
-    public String siteDetailForward(@RequestParam("id") int imageId) {
+    public String siteDetailForward(@RequestParam("id") Integer imageId) {
         //根据图片id获取到对应的站点id
         int siteId = siteService.selectSiteIdByImageId(imageId);
         /**
@@ -326,7 +337,7 @@ public class IndexController extends BaseController {
     }
 
     @RequestMapping("/siteDetailForwardBySiteId")
-    public String siteDetailForwardBySiteId(@RequestParam("id") int siteId) {
+    public String siteDetailForwardBySiteId(@RequestParam("id") Integer siteId) {
         List<Dict> dictByType = dictService.getDictByType(DictTypeEnum.DICT_TYPE_ENUM_CHILDCATEGORY.getCode());
         request.getSession().setAttribute("list", dictByType);
         request.getSession().setAttribute("siteId", siteId);

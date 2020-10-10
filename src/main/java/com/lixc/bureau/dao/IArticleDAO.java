@@ -69,4 +69,6 @@ public interface IArticleDAO {
 
 
     int deleteByBatch(List<Article> list);
+
+    List<CategoryEntity> getCategoryListByType(String type);
 }

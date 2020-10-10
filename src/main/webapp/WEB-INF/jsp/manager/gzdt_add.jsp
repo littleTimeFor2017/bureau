@@ -46,14 +46,13 @@
                     <%--</div>--%>
             </div>
         </div>
-        <%--如果是政工党建模块，增加文章发布的子菜单--%>
-    <div class="row form-group" <c:if test="${c_id} != 4">style="display: none"</c:if>>
-        <div class="col-md-2 control-label">
-        <label>选择模块</label>
-        </div>
-        <div class="col-md-9 controls" id="moudle_content">
-        </div>
-    </div>
+<%--    <div class="row form-group" <c:if test="${c_id} == 12">style="display: none"</c:if>>--%>
+<%--        <div class="col-md-2 control-label">--%>
+<%--        <label>选择模块</label>--%>
+<%--        </div>--%>
+<%--        <div class="col-md-9 controls" id="moudle_content">--%>
+<%--        </div>--%>
+<%--    </div>--%>
 
 
         <div class="row form-group" <c:if test="${c_id !=2}">style="display: none"</c:if>>

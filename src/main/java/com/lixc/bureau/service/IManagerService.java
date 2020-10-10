@@ -13,6 +13,13 @@ public interface IManagerService {
 
     List<CategoryEntity> getAllCategorise();
 
+    /**
+     * 根据type获取二级菜单
+     * @param type  当前菜单类型
+     * @return
+     */
+    List<CategoryEntity> getCategoryListByType(String type);
+
     CategoryEntity getCategoryEntityById(int id);
 
     CategoryEntity getCategoryEntityByType(String type);

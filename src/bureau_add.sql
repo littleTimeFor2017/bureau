@@ -54,3 +54,6 @@ create table `sys_article_module`(
                                    PRIMARY KEY (`id`) USING BTREE
 
 )ENGINE = InnoDB;
+
+
+UPDATE `sys_category` SET `name` = '今日注意', `parent_id` = -1, `type` = 'jrzy' WHERE `id` = 10;
