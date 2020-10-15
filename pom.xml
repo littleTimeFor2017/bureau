@@ -119,6 +119,24 @@
             <artifactId>commons-io</artifactId>
             <version>2.6</version>
         </dependency>
+        <!--        poi start-->
+<!--        <dependency>-->
+<!--            <groupId>com.google.guava</groupId>-->
+<!--            <artifactId>guava</artifactId>-->
+<!--            <version>24.0-jre</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.apache.poi</groupId>-->
+<!--            <artifactId>poi-scratchpad</artifactId>-->
+<!--            <version>3.17</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.apache.poi</groupId>-->
+<!--            <artifactId>poi-ooxml</artifactId>-->
+<!--            <version>3.17</version>-->
+<!--        </dependency>-->
+
+        <!--        poi end-->
     </dependencies>
 
     <build>
@@ -173,6 +191,148 @@
             </resource>
         </resources>
     </build>
+
+    <!--    <build>-->
+    <!--        <finalName>${project.artifactId}-${profiles.active}</finalName>-->
+    <!--        <resources>-->
+    <!--            <resource>-->
+    <!--                <directory>src/main/resources</directory>-->
+    <!--                <filtering>true</filtering>-->
+    <!--                <includes>-->
+    <!--                    <include>application.yml</include>-->
+    <!--                    <include>application-dev.yml</include>-->
+    <!--                </includes>-->
+    <!--            </resource>-->
+    <!--            <resource>-->
+    <!--                <directory>src/main/resources</directory>-->
+    <!--                <filtering>false</filtering>-->
+    <!--                <includes>-->
+    <!--                    <include>templates/**</include>-->
+    <!--                    <include>static/**</include>-->
+    <!--                    <include>mapper/**</include>-->
+    <!--                    <include>mybatis/**</include>-->
+    <!--                    <include>freemark/**</include>-->
+    <!--                    <include>spy.properties</include>-->
+    <!--                </includes>-->
+    <!--            </resource>-->
+    <!--        </resources>-->
+    <!--        <plugins>-->
+    <!--            &lt;!&ndash; 分离打包开始 &ndash;&gt;-->
+    <!--            &lt;!&ndash; 跳过测试代码 &ndash;&gt;-->
+    <!--            <plugin>-->
+    <!--                <groupId>org.apache.maven.plugins</groupId>-->
+    <!--                <artifactId>maven-surefire-plugin</artifactId>-->
+    <!--                <configuration>-->
+    <!--                    <skipTests>true</skipTests>-->
+    <!--                </configuration>-->
+    <!--            </plugin>-->
+    <!--            &lt;!&ndash; maven打包成jar的插件 &ndash;&gt;-->
+    <!--            &lt;!&ndash; 打包jar文件时，配置manifest文件，加入lib包的jar依赖 &ndash;&gt;-->
+    <!--            <plugin>-->
+    <!--                <groupId>org.apache.maven.plugins</groupId>-->
+    <!--                <artifactId>maven-jar-plugin</artifactId>-->
+    <!--                <configuration>-->
+    <!--                    &lt;!&ndash; 把target/classes/下的文件导入到jar内 &ndash;&gt;-->
+    <!--                    <classesDirectory>target/classes/</classesDirectory>-->
+    <!--                    <finalName>${project.artifactId}-${project.version}</finalName>-->
+    <!--                    <archive>-->
+    <!--                        <manifest>-->
+    <!--                            &lt;!&ndash; 指定程序入口 &ndash;&gt;-->
+    <!--                            <mainClass>com.lixc.bureau.BureauApplication</mainClass>-->
+    <!--                            &lt;!&ndash; 打包时 MANIFEST.MF文件不记录的时间戳版本 &ndash;&gt;-->
+    <!--                            <useUniqueVersions>false</useUniqueVersions>-->
+    <!--                            <addClasspath>true</addClasspath>-->
+    <!--                            &lt;!&ndash; 服务依赖的jar包放在lib目录下 &ndash;&gt;-->
+    <!--                            <classpathPrefix>lib/</classpathPrefix>-->
+    <!--                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>-->
+    <!--                        </manifest>-->
+    <!--                        <manifestEntries>-->
+    <!--                            &lt;!&ndash;MANIFEST.MF 中 Class-Path 加入资源文件目录 &ndash;&gt;-->
+    <!--                            <Class-Path>./resources/</Class-Path>-->
+    <!--                        </manifestEntries>-->
+    <!--                    </archive>-->
+    <!--                    &lt;!&ndash; jar包中不包括以下文件 &ndash;&gt;-->
+    <!--                    <excludes>-->
+    <!--                        <exclude>mapper/**</exclude>-->
+    <!--                        <exclude>static/**</exclude>-->
+    <!--                        <exclude>templates/**</exclude>-->
+    <!--                        <exclude>mybatis/**</exclude>-->
+    <!--                        <exclude>**/*.yml</exclude>-->
+    <!--                        <exclude>**/*.xml</exclude>-->
+    <!--                        <exclude>**/*.properties</exclude>-->
+    <!--                    </excludes>-->
+    <!--                    <outputDirectory>${project.build.directory}</outputDirectory>-->
+    <!--                </configuration>-->
+    <!--            </plugin>-->
+    <!--            &lt;!&ndash; 分离打包关键代码 maven-dependency-plugin &ndash;&gt;-->
+    <!--            <plugin>-->
+    <!--                <groupId>org.apache.maven.plugins</groupId>-->
+    <!--                <artifactId>maven-dependency-plugin</artifactId>-->
+    <!--                <executions>-->
+    <!--                    <execution>-->
+    <!--                        <id>copy-dependencies</id>-->
+    <!--                        <phase>package</phase>-->
+    <!--                        <goals>-->
+    <!--                            <goal>copy-dependencies</goal>-->
+    <!--                        </goals>-->
+    <!--                        <configuration>-->
+    <!--                            <type>jar</type>-->
+    <!--                            <includeTypes>jar</includeTypes>-->
+    <!--                            &lt;!&ndash; 存放服务依赖的jar包，存放在服务相同目录的lib文件夹下 &ndash;&gt;-->
+    <!--                            <outputDirectory>-->
+    <!--                                ${project.build.directory}/lib-->
+    <!--                            </outputDirectory>-->
+    <!--                        </configuration>-->
+    <!--                    </execution>-->
+    <!--                </executions>-->
+    <!--            </plugin>-->
+    <!--            &lt;!&ndash; 分离打包关键代码 maven-resources-plugin &ndash;&gt;-->
+    <!--            <plugin>-->
+    <!--                <groupId>org.apache.maven.plugins</groupId>-->
+    <!--                <artifactId>maven-resources-plugin</artifactId>-->
+    <!--                <executions>-->
+    <!--                    <execution>-->
+    <!--                        <id>copy-resources</id>-->
+    <!--                        <phase>package</phase>-->
+    <!--                        <goals>-->
+    <!--                            <goal>copy-resources</goal>-->
+    <!--                        </goals>-->
+    <!--                        <configuration>-->
+    <!--                            &lt;!&ndash; 指定resources文件 &ndash;&gt;-->
+    <!--                            <resources>-->
+    <!--                                <resource>-->
+    <!--                                    <directory>src/main/resources</directory>-->
+    <!--                                    &lt;!&ndash; 分环境过滤开启 &ndash;&gt;-->
+    <!--                                    <filtering>true</filtering>-->
+    <!--                                    <includes>-->
+    <!--                                        <include>application.yml</include>-->
+    <!--                                        &lt;!&ndash; 分环境配置文件不用可删除 &ndash;&gt;-->
+    <!--                                        <include>application-dev.yml</include>-->
+    <!--                                    </includes>-->
+    <!--                                </resource>-->
+    <!--                                <resource>-->
+    <!--                                    <directory>src/main/resources</directory>-->
+    <!--                                    &lt;!&ndash; 分环境过滤关闭 &ndash;&gt;-->
+    <!--                                    <filtering>false</filtering>-->
+    <!--                                    <includes>-->
+    <!--                                        <include>templates/**</include>-->
+    <!--                                        <include>static/**</include>-->
+    <!--                                        <include>mapper/**</include>-->
+    <!--                                        <include>freemark/**</include>-->
+    <!--                                        <include>mybatis/**</include>-->
+    <!--                                        <include>spy.properties</include>-->
+    <!--                                    </includes>-->
+    <!--                                </resource>-->
+    <!--                            </resources>-->
+    <!--                            &lt;!&ndash; 输出路径 &ndash;&gt;-->
+    <!--                            <outputDirectory>${project.build.directory}/resources</outputDirectory>-->
+    <!--                        </configuration>-->
+    <!--                    </execution>-->
+    <!--                </executions>-->
+    <!--            </plugin>-->
+    <!--            &lt;!&ndash; 分离打包结束 &ndash;&gt;-->
+    <!--        </plugins>-->
+    <!--    </build>-->
 
 
 </project>

@@ -39,7 +39,6 @@
             and ssa.module_id = #{moduleId}
         </if>
         order by sa.createTime desc
-        limit #{start} , #{end}
     </select>
     <select id="selectArticleNyRealCount" resultType="java.lang.Integer">
         select count(1) from sys_site_article ssa left join sys_article sa on ssa.article_id = sa.id

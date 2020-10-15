@@ -313,8 +313,9 @@
     }
 
     function goBack(type, fromSite, siteId) {
+        console.log(fromSite);
         var url = "";
-        if (!fromSite) {
+        if (!fromSite || fromSite == "false") {
             url = path + "/index?r=" + Math.random();
         } else {
             url = path + "/other?type=zgdj";

@@ -1,6 +1,7 @@
 package com.lixc.bureau.controller;
 
 import com.baidu.ueditor.ActionEnter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,7 +14,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Calendar;
 import java.util.Random;
-
+@Slf4j
 @RestController
 @RequestMapping("/common/ueditor/")
 public class UeditorController {
@@ -43,6 +44,7 @@ public class UeditorController {
             PrintWriter out = response.getWriter();
             out.write(new ActionEnter(request, rootPath).exec());
         } catch (IOException e) {
+            log.error(e.getLocalizedMessage());
             e.printStackTrace();
         }
 //        return "bureau/common/editor/controller";

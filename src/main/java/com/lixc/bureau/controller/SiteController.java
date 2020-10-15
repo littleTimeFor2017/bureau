@@ -72,7 +72,7 @@ public class SiteController extends BaseController {
             map.put("list", list);
             map.put("obj", site);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getLocalizedMessage());
             map.put("success", false);
             map.put("message", "查询专栏列表数据异常");
         }
@@ -117,6 +117,7 @@ public class SiteController extends BaseController {
             siteService.addArticle(siteQuery);
             log.info("添加文章成功");
         } catch (Exception e) {
+            log.error(e.getLocalizedMessage());
             log.error("添加文章失败，请联系管理员");
             return EduResult.error("添加文章失败，请联系管理员");
         }
@@ -154,6 +155,7 @@ public class SiteController extends BaseController {
             map.put("list", dictByType);
             map.put("siteArticle", siteArticle);
         } catch (Exception e) {
+            log.error(e.getLocalizedMessage());
             map.put("success", false);
             map.put("message", "查询模块异常");
         }
@@ -186,6 +188,7 @@ public class SiteController extends BaseController {
             log.info("修改文章成功");
         } catch (Exception e) {
             log.error("修改文章失败，请联系管理员");
+            log.error(e.getLocalizedMessage());
             return EduResult.error("修改文章失败，请联系管理员");
         }
         return EduResult.ok();

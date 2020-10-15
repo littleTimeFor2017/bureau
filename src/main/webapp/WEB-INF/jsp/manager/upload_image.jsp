@@ -135,7 +135,7 @@
                                 if(e.use_position == 1){usePostion = "首页轮播图"}else if(e.use_position == 2){usePostion="网站专栏"}else if(e.use_position == 3){usePostion="首页飘窗"}
                                 var cno = $('#pageSize').val() * ($('#curPage').val() - 1);
                                 html = html.replace('{{id}}', (cno + i + 1))
-                                    .replace('{{name}}', "<img  src='/bureau/"+ e.thumURL + "'/>")
+                                    .replace('{{name}}', "<img  src='/bureau/images/"+ e.thumURL + "'/>")
                                     .replace('{{createBy}}', e.createBy)
                                     .replace('{{usePosition}}', usePostion)
                                     .replace('{{createTime}}', e.create_date)

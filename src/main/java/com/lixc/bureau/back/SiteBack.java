@@ -12,7 +12,7 @@ import java.util.Date;
  */
 @Data
 public class SiteBack {
-    private Integer id;
+    private Integer    id;
     private String title;
     private String content;
     private String isShow;

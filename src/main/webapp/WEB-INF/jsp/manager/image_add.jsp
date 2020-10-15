@@ -56,6 +56,11 @@
             e.preventDefault();
             var fd = new FormData($("#paper-add-form")[0]);
             fd.append('file', $('#logoFile')[0].files[0]);
+            if($("input[type=checkbox]:checked").length == 0){
+                layer.msg("请选择所属模块", {icon: 2});
+                $("#add-paper-btn").button('reset');
+                return;
+            }
             var $form = $(e.target);
             setImg(fd);
         });

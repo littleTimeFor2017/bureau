@@ -185,7 +185,9 @@ public class ManagerServiceImpl extends PaginatorBean implements IManagerService
                 SiteArticle siteArticle = new SiteArticle();
                 siteArticle.setSiteId(site.getId());
                 List<Article> articles = siteArticleMapper.selectAllArticleBySiteId(siteArticle);
-                dao.deleteByBatch(articles);
+                if(!CollectionUtils.isEmpty(articles)){
+                    dao.deleteByBatch(articles);
+                }
                 siteArticleMapper.deleteBySiteId(site.getId());
             }
         }

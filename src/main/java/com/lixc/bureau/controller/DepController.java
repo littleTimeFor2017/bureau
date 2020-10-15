@@ -2,6 +2,7 @@ package com.lixc.bureau.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.lixc.bureau.service.IDepartmentService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
 
+@Slf4j
 @Controller
 @RequestMapping("/dep")
 public class DepController extends BaseController {
@@ -26,6 +28,7 @@ public class DepController extends BaseController {
             map.put("success",true);
             map.put("list",departmentService.getAllDeps());
         }catch (Exception e){
+            log.error(e.getLocalizedMessage());
             map.put("success",false);
             map.put("mesasge","未知异常");
         }
@@ -41,6 +44,7 @@ public class DepController extends BaseController {
             map.put("success",true);
             map.put("list",departmentService.getAllDepsWithStatus(article_id));
         }catch (Exception e){
+            log.error(e.getLocalizedMessage());
             map.put("success",false);
             map.put("mesasge","未知异常");
         }

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.lixc.bureau.entity.DueEntity;
 import com.lixc.bureau.service.IDueService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequestMapping("/due")
 public class DueController extends BaseController {
@@ -29,7 +31,7 @@ public class DueController extends BaseController {
            map.put("success",true);
            map.put("list",list);
        }catch (Exception e){
-           e.printStackTrace();
+           log.error(e.getLocalizedMessage());
            map.put("success",false);
            map.put("message","获取值班记录失败");
        }
@@ -56,7 +58,7 @@ public class DueController extends BaseController {
             map.put("success", true);
             map.put("message", "添加值班成功");
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getLocalizedMessage());
             map.put("success", false);
             map.put("message", "添加值班失败");
         }
@@ -79,7 +81,7 @@ public class DueController extends BaseController {
             map.put("success", true);
             map.put("message", "保存成功");
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getLocalizedMessage());
             map.put("success", false);
             map.put("message", "保存失败");
         }

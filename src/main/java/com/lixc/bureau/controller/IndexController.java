@@ -5,6 +5,7 @@ import com.lixc.bureau.constants.BureauConstants;
 import com.lixc.bureau.entity.*;
 import com.lixc.bureau.enums.DictTypeEnum;
 import com.lixc.bureau.service.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -16,7 +17,9 @@ import java.util.Map;
 
 /**
  * 处理页面加载前的数据
+ * @author 11930
  */
+@Slf4j
 @Controller
 @RequestMapping("/")
 public class IndexController extends BaseController {
@@ -110,7 +113,7 @@ public class IndexController extends BaseController {
             map.put("success", true);
             map.put("obj", article);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getLocalizedMessage());
             map.put("success", true);
         }
         return JSON.toJSONStringWithDateFormat(map, "yyyy-MM-dd");

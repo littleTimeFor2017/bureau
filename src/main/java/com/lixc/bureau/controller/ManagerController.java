@@ -6,6 +6,7 @@ import com.lixc.bureau.entity.*;
 import com.lixc.bureau.enums.DictTypeEnum;
 import com.lixc.bureau.service.*;
 import com.lixc.bureau.util.EduResult;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.*;
 
+@Slf4j
 @Controller
 @RequestMapping("/manager")
 public class ManagerController extends BaseController {
@@ -63,7 +65,7 @@ public class ManagerController extends BaseController {
                 map.put("success", true);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getLocalizedMessage());
             map.put("success", false);
 
         }
@@ -95,7 +97,7 @@ public class ManagerController extends BaseController {
             map.put("list", list);
             map.put("obj", article);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getLocalizedMessage());
             map.put("success", false);
             map.put("message", "获取工作动态数据列表异常");
         }
@@ -149,13 +151,6 @@ public class ManagerController extends BaseController {
         this.map = new HashMap<>();
         String savePath = request.getServletContext().getRealPath("/WEB-INF/upload");
         logger.info("存储路径:" + savePath);
-        //上传时生成的临时文件保存目录
-        String tempPath = request.getServletContext().getRealPath("/WEB-INF/temp");
-        File toFile = new File(tempPath);
-        if (!toFile.exists() && !toFile.isDirectory()) {
-            logger.error("目录或文件不存在！");
-            toFile.mkdir();
-        }
         //消息提示
         String message = "";
         try {
@@ -177,10 +172,9 @@ public class ManagerController extends BaseController {
             map.put("result", annex.getId());
             map.put("success", true);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getLocalizedMessage());
             map.put("msg", "异常！");
             map.put("success", false);
-
         }
         return JSON.toJSONString(map);
     }
@@ -235,11 +229,11 @@ public class ManagerController extends BaseController {
             //关闭输出流
             os.close();
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            log.error(e.getLocalizedMessage());
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            log.error(e.getLocalizedMessage());
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getLocalizedMessage());
         }
         return null;
 
@@ -329,7 +323,7 @@ public class ManagerController extends BaseController {
             map.put("list", list);
             map.put("obj", imageEntity);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getLocalizedMessage());
             map.put("success", false);
             map.put("message", "获取图片列表异常");
         }
@@ -401,7 +395,7 @@ public class ManagerController extends BaseController {
             map.put("message", message);
             map.put("url", url);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getLocalizedMessage());
             message = "上传失败";
             map.put("success", false);
             map.put("message", message);
@@ -445,7 +439,7 @@ public class ManagerController extends BaseController {
             //关闭输出流
             fos.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getLocalizedMessage());
         }
         return fileName;
     }
@@ -473,7 +467,7 @@ public class ManagerController extends BaseController {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getLocalizedMessage());
             map.put("success", false);
             map.put("message", "删除图片异常");
         }

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.lixc.bureau.constants.BureauConstants;
 import com.lixc.bureau.entity.User;
 import com.lixc.bureau.service.IUserService;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.HashMap;
 import java.util.List;
 
-
+@Slf4j
 @Controller
 @RequestMapping("/user")
 public class UserController extends BaseController {
@@ -49,22 +50,6 @@ public class UserController extends BaseController {
         return JSON.toJSONString(map);
     }
 
-//    @RequestMapping("/register")
-//    public String register(@RequestParam("user") User user) {
-//        logger.info(">>>>>>>>>>>>  register start");
-//        try {
-//            User user1 = userService.getUserByName(user);
-//            if (StringUtils.isEmpty(user1)) {
-//                throw new Exception("此用户已经注册过了；用户名：" + user.getUserName());
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            logger.info(e.getMessage());
-//        }
-//        logger.info(">>>>>>>>>>>>  register start");
-//        return "success";
-//    }
-
     @RequestMapping("/loginforward")
     public String loginforward() {
         return "login";
@@ -89,6 +74,7 @@ public class UserController extends BaseController {
             map.put("success", true);
             map.put("list", allUsers);
         } catch (Exception e) {
+            log.error(e.getLocalizedMessage());
             map.put("success", true);
             map.put("message", "获取用户列表失败");
         }
@@ -102,6 +88,7 @@ public class UserController extends BaseController {
             map.put("success", true);
             map.put("message", "添加成功");
         } catch (Exception e) {
+            log.error(e.getLocalizedMessage());
             map.put("success", true);
             map.put("message", "添加用户失败");
         }

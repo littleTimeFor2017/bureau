@@ -34,7 +34,7 @@ spring:
       suffix: .jsp
   #  static-path-pattern: /**
   resources:
-    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:///D:/uefile/,file:///E:/Users/11930/Desktop/temp/
+    static-locations: classpath:/META-INF/resources/,classpath:webapp/,classpath:/resources/,classpath:/static/,classpath:/public/,file:///D:/uefile/,file:///E:/Users/11930/Desktop/temp/;file:C:///
 
 
 logging.level.org.springframework.boot.autoconfigure: info
