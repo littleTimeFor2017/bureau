@@ -20,4 +20,8 @@ public class SiteQuery {
     private Integer siteId;
     private Integer moduleId;
     private Integer articleId;
+    /**
+     * 附件id
+     */
+    private Integer annId;
 }

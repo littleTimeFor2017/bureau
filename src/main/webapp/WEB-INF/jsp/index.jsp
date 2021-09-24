@@ -321,30 +321,30 @@
                         <div id="bottom_slider">
                             <ul class="oUlplay">
                                 <li><a target="_blank" href=""><img style="float: left; padding-right: 4.5px;"
-                                                                    src="<%=path%>/img/img_change/ic10.jpg" alt=""
+                                                                    src="<%=path%>/img/update/rcdd.jpg" alt=""
                                                                     width="190"
                                                                     height="137"/>
-                                    <p>帮扶共建活动</p></a></li>
+                                    <p>“减量控大”工作日常调度</p></a></li>
                                 <li><a target="_blank" href=""><img style="float: left; padding-right: 4.5px;"
-                                                                    src="<%=path%>/img/img_change/b2.jpg" alt=""
+                                                                    src="<%=path%>/img/update/dsxx.jpg" alt=""
                                                                     width="236"
                                                                     height="137"/>
-                                    <p>社会主义核心价值观宣传教育</p></a></li>
+                                    <p>党史学习教育</p></a></li>
                                 <li><a target="_blank" href=""><img style="float: left; padding-right: 4.5px;"
-                                                                    src="<%=path%>/img/img_change/b3.jpg" alt=""
+                                                                    src="<%=path%>/img/update/dwzdjy.jpg" alt=""
                                                                     width="236"
                                                                     height="137"/>
-                                    <p>学雷锋志愿服务</p></a></li>
+                                    <p>队伍整顿教育</p></a></li>
                                 <li><a target="_blank" href=""><img style="float: left; padding-right: 4.5px;"
-                                                                    src="<%=path%>/img/img_change/b4.jpg" alt=""
+                                                                    src="<%=path%>/img/update/jtzx.jpg" alt=""
                                                                     width="236"
                                                                     height="137"/>
-                                    <p>思想道德建设</p></a></li>
+                                    <p>交通秩序政治</p></a></li>
                                 <li><a target="_blank" href=""><img style="float: left;"
-                                                                    src="<%=path%>/img/img_change/b5.jpg" alt=""
+                                                                    src="<%=path%>/img/update/wwqzbss.jpg" alt=""
                                                                     width="236"
                                                                     height="137"/>
-                                    <p>创城工作推进部署</p></a></li>
+                                    <p>我为群众办实事</p></a></li>
                             </ul>
                         </div>
                     </div>

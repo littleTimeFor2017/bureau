@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -97,7 +98,12 @@ public class ISiteServiceImpl extends PaginatorBean implements ISiteService {
         article.setCreateBy(siteQuery.getUserName());
         article.setIs_site("Y");
         article.setCreateTime(new Date());
+        if(!StringUtils.isEmpty(siteQuery.getAnnId())){
+            article.setA_id(siteQuery.getAnnId());
+        }
         articleDAO.addArticle(article);
+
+
         //添加文章专栏关联
         SiteArticle siteArticle = new SiteArticle();
         siteArticle.setArticleId(article.getId());

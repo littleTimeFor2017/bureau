@@ -33,6 +33,15 @@
                 <div id="ue_content"></div>
             </div>
         </div>
+        <div class="row form-group" <c:if test="${c_id ==10}">style="display: none"</c:if>>
+            <div class="col-md-2 control-label">
+                <label>附件</label>
+            </div>
+            <div class="col-md-9 controls">
+                <input type="file" name="annex" id="annex" class="form-control">
+                <input type="hidden" name="a_id" id="a_id">
+            </div>
+        </div>
         <div class="row form-group">
             <div class="col-md-2 control-label">
                 <label>是否展示</label>
@@ -53,10 +62,12 @@
                 <div class="radio-inline">
                     <c:forEach items="${list}" var="obj" varStatus="status">
                         <c:if test="${status.index == 0}">
-                            <label style="margin-left:20px;"> <input type="radio" name="module" checked="checked"  value="${obj.id}"/>${obj.dictValue} </label>
+                            <label style="margin-left:20px;"> <input type="radio" name="module" checked="checked"
+                                                                     value="${obj.id}"/>${obj.dictValue} </label>
                         </c:if>
                         <c:if test="${status.index != 0}">
-                            <label style="margin-left:20px;"> <input type="radio" name="module"  value="${obj.id}"/>${obj.dictValue} </label>
+                            <label style="margin-left:20px;"> <input type="radio" name="module"
+                                                                     value="${obj.id}"/>${obj.dictValue} </label>
                         </c:if>
                     </c:forEach>
                 </div>
@@ -118,7 +129,13 @@
                 return;
             } // Get the BootstrapValidator instance
             var bv = $form.data('bootstrapValidator');
-            addArticleOnly()
+            let val = $("#annex").val();
+            console.log(val)
+            if(val){
+                uploadAnnex()
+            }else{
+                addArticleOnly()
+            }
         });
 
         $("#add-paper-btn").on('click', function (event) {
@@ -127,36 +144,67 @@
         });
     })
 
+    /**
+     * 上传附件方法
+     */
+    function uploadAnnex() {
+        var fd = new FormData($("#paper-add-form")[0]);
+        fd.append('file', $('#annex')[0].files[0]);
+        $.ajax({
+            url: path + '/manager/uploadFile',
+            dataType: 'json',
+            async: false,
+            data: fd,
+            type: 'POST',
+            processData: false,
+            contentType: false,
+            catch: false,
+            success: function (data) {
+                console.log(data)
+                if (data && data.success) {
+                    $("#a_id").val(data.result)
+                    addArticleOnly();
+                } else {
+                    console.log("error")
+                }
+            },
+            error: function (data) {
+                console.log(data);
+                layer.msg(data.msg, {icon: 2});
+            }
+        })
+    }
 
     function addArticleOnly() {
-    var moduleId = $("input[name=module ]:checked").val();
+        var moduleId = $("input[name=module ]:checked").val();
         var siteQuery = {};
-    siteQuery.title = $("#Atitle").val();
-    siteQuery.content = $("#description").val();
-    siteQuery.siteId = $("#c_id").val();
-    siteQuery.moduleId = moduleId;
-            $.ajax({
-                url: path+"/site/addArticle",
-                dataType: 'json',
-                async: false,
-                data: JSON.stringify(siteQuery),
-                type: 'POST',
-                contentType: 'application/json',
-                success: function (data) {
-                    console.log(data);
-                    if (data.resultCode == 200) {
-                        loadData();
-                        $('#dModal').modal('hide');
-                        layer.msg("添加成功", {icon: 1});
-                    } else {
-                        layer.msg(data.msg, {icon: 2});
-                    }
-                },
-                error: function (data) {
-                    console.log(data);
+        siteQuery.title = $("#Atitle").val();
+        siteQuery.content = $("#description").val();
+        siteQuery.siteId = $("#c_id").val();
+        siteQuery.annId = $("#a_id").val();
+        siteQuery.moduleId = moduleId;
+        $.ajax({
+            url: path + "/site/addArticle",
+            dataType: 'json',
+            async: false,
+            data: JSON.stringify(siteQuery),
+            type: 'POST',
+            contentType: 'application/json',
+            success: function (data) {
+                console.log(data);
+                if (data.resultCode == 200) {
+                    loadData();
+                    $('#dModal').modal('hide');
+                    layer.msg("添加成功", {icon: 1});
+                } else {
                     layer.msg(data.msg, {icon: 2});
                 }
-            })
+            },
+            error: function (data) {
+                console.log(data);
+                layer.msg(data.msg, {icon: 2});
+            }
+        })
     }
 
 </script>

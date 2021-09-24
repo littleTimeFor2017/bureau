@@ -1,0 +1,10 @@
+PTA展示证书公钥base64；
+nc web站点中，取消登录的话 需要点击两次才能取消
+
+PTa 进行安装时，先要将原来的版本卸载干净     C:\Windows\SysWOW64\itruschina目录下dll安装文件全部删除
+
+
+
+pta dll文件注册  regsvr32 pta.dll  如果注册失败的话，使用管理员运行命令窗口进行注册即可
+pta 覆盖卸载：如果使用exe的方式进行安装的话，再c:/windows/proFiles(x86)目录下 会有itrus相关的东西。点进去寻找卸载目录
+		如果使用的reg方式进行注册，使用  regsvr32 /u pta.dll进行反注册
