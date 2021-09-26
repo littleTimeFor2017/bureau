@@ -1,5 +1,8 @@
 HELP.md
 /target/
+/out/
+/.mvn/
+/log_dir_IS_UNDEFINED/
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###
@@ -16,6 +19,8 @@ HELP.md
 *.iws
 *.iml
 *.ipr
+
+
 
 ### NetBeans ###
 /nbproject/private/
